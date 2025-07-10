@@ -26,7 +26,7 @@ export default function Footer() {
             />
           </div>
           <p className="mt-4 text-gray-300 text-lg max-w-2xl mx-auto">
-            Providing compassionate senior living with dignity, comfort, and exceptional care in the heart of Nairobi.
+            Providing compassionate senior living with dignity, comfort, and exceptional care in the heart of Oregon.
           </p>
         </div>
 
