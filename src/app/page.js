@@ -1,103 +1,516 @@
-import Image from "next/image";
+"use client"
+
+import Head from 'next/head'
+import Header from '@/components/Header'
+import Image from 'next/image'
+import Footer from '@/components/Footer'
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [hoveredCard, setHoveredCard] = useState(null)
+  const [currentSlide, setCurrentSlide] = useState(0)
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+  // Placeholder for carousel images - replace with your actual images and descriptions
+  const carouselImages = [
+    {
+      id: 1,
+      src: "/assets/personal-bathtub.jpg",
+      alt: "Personal Bathtub",
+      description: "Personal Bathtub"
+    },
+    {
+      id: 2,
+      src: "/assets/peaceful-outdoor-space.jpg", 
+      alt: "Peaceful outdoorspace",
+      description: "Peaceful Outdoor Space"
+    },
+    {
+      id: 3,
+      src: "/assets/personal-toilets.jpg",
+      alt: "Personal Toilets",
+      description: "Personal Toilets"
+    },
+    {
+      id: 4,
+      src: "/assets/spacious-private-bedrooms.jpg",
+      alt: "Spacious Private Bedrooms",
+      description: "Spacious Private Bedrooms"
+    },
+    {
+      id: 5,
+      src: "/assets/outdoorspace.jpg",
+      alt: "Outdoor Space",
+      description: "Outdoor Space"
+    },
+    {
+      id: 6,
+      src: "/assets/community-meals.jpeg",
+      alt: "Community Meals",
+      description: "Community Meals"
+    }
+  ]
+
+  // Auto-rotate carousel every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % carouselImages.length)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [carouselImages.length])
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % carouselImages.length)
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length)
+  }
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index)
+  }
+
+  const features = [
+    {
+      id: 1,
+      icon: "🏠",
+      title: "Comfort and Safety",
+      description: "We offer a wide and comprehensive range of care and services. From light care to end-of-life including dementia and hospice care.",
+      color: "border-blue-500",
+      bgColor: "bg-blue-50"
+    },
+    {
+      id: 2,
+      icon: "📏",
+      title: "Spacious",
+      description: "Large bedrooms with roll-in showers, as well as open and comfortable common areas. Our AFH has wide hallways and is fully wheelchair accessible.",
+      color: "border-green-500",
+      bgColor: "bg-green-50"
+    },
+    {
+      id: 3,
+      icon: "🕐",
+      title: "Care Anytime",
+      description: "We are staffed 24/7. Our centralized call systems ensures that residents get care whenever they need, without waiting.",
+      color: "border-indigo-500",
+      bgColor: "bg-indigo-50"
+    },
+    {
+      id: 4,
+      icon: "🌳",
+      title: "Outdoor Space",
+      description: "Spacious and pleasant outdoor deck offers residents the ability to enjoy the outdoors in wheelchairs or walkers.",
+      color: "border-purple-500",
+      bgColor: "bg-purple-50"
+    }
+  ]
+
+  const testimonials = [
+    {
+      id: 1,
+      name: "Annamarie & Terilynn",
+      relation: "daughters",
+      date: "September 17, 2023",
+      title: "Perfect place for mom!",
+      text: "I can't say enough good things about Joe and his staff. It has meant the world to us to know such great people are taking care of mom. She has become more alert and interactive since being at Joe's. It feels like a home. It is always very clean, very welcoming, and lively. We know she is safe and well taken care of.",
+      rating: 5
+    },
+    {
+      id: 2,
+      name: "Doug S.",
+      relation: "spouse",
+      date: "September 5, 2023",
+      title: "GREAT PLACE!",
+      text: "Westford Homes truly is a home! Very caring, friendly, and helpful staff. Willing to do whatever it takes to make my spouse's stay as safe and comfortable as possible. Would highly recommend them!",
+      rating: 5
+    },
+    {
+      id: 3,
+      name: "Sammy",
+      relation: "family",
+      date: "August 23, 2023",
+      title: "A Place like home",
+      text: "The world a brighter place, May you continue to touch more lives in the future as you have done so for my Dad!",
+      rating: 5
+    }
+  ]
+
+  const renderStars = (rating) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <span key={i} className={`text-lg ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}>
+        ⭐
+      </span>
+    ))
+  }
+
+  return (
+    <>
+      <Head>
+        <title>Westford Homes | Adult Foster Home in Wilsonville, Oregon</title>
+        <meta
+          name="description"
+          content="Adult Foster Home located at Charbonneau District in Wilsonville, Oregon. Receive safe and competent personal care at adult Foster home licensed in Clackamas county Oregon."
+        />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Westford Homes | Adult Foster Home in Wilsonville, Oregon" />
+        <meta
+          property="og:description"
+          content="Caring for Local Seniors with loving and personalized senior care. An excellent alternative to institutional assisted living and nursing home facilities."
+        />
+        <meta property="og:image" content="/images/westford-homes-hero.jpg" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://westfordhomes.com" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
+
+      <Header />
+
+      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+        {/* Hero Section */}
+        <section className="relative text-white py-12 sm:py-20 lg:py-24 px-4 overflow-hidden min-h-[70vh] sm:min-h-[80vh] flex items-center">
+          {/* Background Image */}
+          <div className="absolute inset-0">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src="/assets/westford-homes-oregon.jpg"
+              alt="Westford Homes - Adult Foster Home in Wilsonville, Oregon"
+              fill
+              className="object-cover"
+              priority
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+          </div>
+          
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/50 to-yellow-500/40"></div>
+          <div className="absolute inset-0 bg-black/20"></div>
+          
+          {/* Decorative Elements */}
+          <div className="absolute top-10 right-10 w-16 h-16 sm:w-32 sm:h-32 bg-white/10 rounded-full blur-xl"></div>
+          <div className="absolute bottom-10 left-10 w-24 h-24 sm:w-48 sm:h-48 bg-white/5 rounded-full blur-2xl"></div>
+          
+          <div className="relative max-w-7xl mx-auto w-full">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              {/* Left Column - Text */}
+              <div className="space-y-6 sm:space-y-8">
+                <div className="animate-fade-in">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
+                    Westford Homes
+                  </h1>
+                  <div className="w-16 sm:w-24 h-1 bg-white mb-6 sm:mb-8"></div>
+                  <p className="text-lg sm:text-xl md:text-2xl font-light mb-6 sm:mb-8 leading-relaxed">
+                    Adult Foster Home located at Charbonneau District in Wilsonville, Oregon
+                  </p>
+                  <p className="text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed opacity-90">
+                    Receive safe and competent personal care at adult Foster home licensed in Clackamas county Oregon.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link 
+                    href="/contact" 
+                    className="inline-flex items-center justify-center bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-sm sm:text-base"
+                  >
+                    <span className="mr-2">📞</span>
+                    Contact Us
+                  </Link>
+                  <Link 
+                    href="/services" 
+                    className="inline-flex items-center justify-center border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:bg-white hover:text-blue-600 text-sm sm:text-base"
+                  >
+                    <span className="mr-2">🏥</span>
+                    View Our Care Services
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right Column - Empty space for balance */}
+              <div className="relative lg:block hidden">
+                {/* This column is now empty as the image is in the background */}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Caring for Local Seniors Section */}
+        <section className="py-12 sm:py-16 lg:py-20 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 sm:mb-6">
+                Caring for Local Seniors
+              </h2>
+              <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6 sm:mb-8"></div>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed px-4 sm:px-0">
+                In our adult foster home in Wilsonville Oregon we provide loving and personalized senior care. It's an excellent alternative to institutional assisted living and nursing home facilities, or if you can't continue to live in your own home as your needs increase.
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+              {/* Left Column - Care Description */}
+              <div className="space-y-6 sm:space-y-8">
+                <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6">
+                    From Light Care to End-of-Life
+                  </h3>
+                  <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-4 sm:mb-6">
+                    We can meet a wide range of care and personal needs. From basic supportive assistance to end-of-life care, you will receive safe and competent assistance and support whenever you need help, round the clock.
+                  </p>
+                  <div className="bg-blue-50 p-4 sm:p-6 rounded-xl">
+                    <p className="text-blue-800 font-semibold text-base sm:text-lg">
+                      Making this a place for mom or a place for dad
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 sm:p-8 rounded-2xl shadow-xl">
+                  <h3 className="text-xl sm:text-2xl font-bold mb-4">
+                    Wheelchair Access, Spacious, Comfortable
+                  </h3>
+                  <p className="text-base sm:text-lg leading-relaxed opacity-90">
+                    Our facility is designed with accessibility and comfort in mind, ensuring all residents can navigate safely and comfortably.
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Column - Image */}
+              <div className="relative order-first lg:order-last">
+                <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+                  <Image
+                    src="/assets/interior-caring.jpg"
+                    alt="Caring environment at Westford Homes"
+                    width={600}
+                    height={600}
+                    className="object-cover w-full h-[300px] sm:h-[400px] lg:h-[600px]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="py-12 sm:py-16 lg:py-20 px-4 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 sm:mb-6">
+                Our Care Features
+              </h2>
+              <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6 sm:mb-8"></div>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4 sm:px-0">
+                Comprehensive care services designed around your comfort and safety
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+              {features.map((feature, index) => (
+                <div
+                  key={feature.id}
+                  className={`bg-white p-6 sm:p-8 rounded-2xl shadow-lg border-l-4 ${feature.color} transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${
+                    hoveredCard === feature.id ? feature.bgColor : ''
+                  } animate-fade-in-up`}
+                  onMouseEnter={() => setHoveredCard(feature.id)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                  style={{
+                    animationDelay: `${index * 100}ms`
+                  }}
+                >
+                  <div className="text-3xl sm:text-4xl mb-4">{feature.icon}</div>
+                  <h3 className="font-bold text-gray-800 mb-4 text-lg sm:text-xl">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Image Carousel Section */}
+        <section className="py-12 sm:py-16 lg:py-20 px-4 bg-gradient-to-br from-gray-50 to-gray-100">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 sm:mb-6">
+                See Our Facilities
+              </h2>
+              <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6 sm:mb-8"></div>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4 sm:px-0">
+                Take a visual tour of our comfortable and accessible facilities
+              </p>
+            </div>
+
+            {/* Carousel Component */}
+            <div className="relative">
+              <div className="overflow-hidden rounded-2xl shadow-2xl">
+                <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+                  {carouselImages.map((image, index) => (
+                    <div key={image.id} className="w-full flex-shrink-0 relative">
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        width={1200}
+                        height={500}
+                        className="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                      <div className="absolute bottom-6 left-6 right-6">
+                        <h3 className="text-white text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
+                          {image.description}
+                        </h3>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Navigation Arrows */}
+              <button
+                onClick={prevSlide}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={nextSlide}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+
+              {/* Dots Indicator */}
+              <div className="flex justify-center mt-6 space-x-2">
+                {carouselImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === currentSlide ? 'bg-blue-500' : 'bg-gray-300 hover:bg-gray-400'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Activities Section - Made fully mobile responsive */}
+        <section className="py-12 sm:py-16 lg:py-20 px-4 bg-gradient-to-br from-blue-50 to-indigo-50">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+              {/* Left Column - Image */}
+              <div className="relative order-last lg:order-first">
+                <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+                  <Image
+                    src="/assets/residents-activities.jpg"
+                    alt="Residents and family activities at Westford Homes"
+                    width={600}
+                    height={500}
+                    className="object-cover w-full h-[300px] sm:h-[400px] lg:h-[500px]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                </div>
+              </div>
+
+              {/* Right Column - Content */}
+              <div className="space-y-6 sm:space-y-8">
+                <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 sm:mb-6">
+                    Residents and Family Activities
+                  </h2>
+                  <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6">
+                    We believe in fostering connections and maintaining relationships. Our home encourages family visits and provides engaging activities for our residents.
+                  </p>
+                  <Link 
+                    href="/services" 
+                    className="inline-flex items-center bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
+                  >
+                    <span className="mr-2">🏥</span>
+                    View Our Care Services
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section className="py-12 sm:py-16 lg:py-20 px-4 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 sm:mb-6">
+                What Families Say
+              </h2>
+              <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6 sm:mb-8"></div>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4 sm:px-0">
+                Real stories from families who trust us with their loved ones
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {testimonials.map((testimonial, index) => (
+                <div
+                  key={testimonial.id}
+                  className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border-t-4 border-blue-500 transition-all duration-300 transform hover:scale-105 hover:shadow-xl animate-fade-in-up"
+                  style={{
+                    animationDelay: `${index * 100}ms`
+                  }}
+                >
+                  <div className="flex items-center mb-4">
+                    {renderStars(testimonial.rating)}
+                  </div>
+                  <h3 className="font-bold text-gray-800 mb-3 text-base sm:text-lg">
+                    {testimonial.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed mb-6 text-sm sm:text-base">
+                    "{testimonial.text}"
+                  </p>
+                  <div className="border-t pt-4">
+                    <p className="font-semibold text-gray-800 text-sm sm:text-base">{testimonial.name}</p>
+                    <p className="text-xs sm:text-sm text-gray-500">{testimonial.relation}</p>
+                    <p className="text-xs sm:text-sm text-gray-400">{testimonial.date}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Call to Action Section */}
+        <section className="py-12 sm:py-16 lg:py-20 px-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
+              Ready to Learn More?
+            </h2>
+            <p className="text-lg sm:text-xl mb-6 sm:mb-8 opacity-90 px-4 sm:px-0">
+              Contact us today to discuss how we can provide the best care for your loved one
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link 
+                href="/contact" 
+                className="inline-flex items-center justify-center bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-sm sm:text-base"
+              >
+                <span className="mr-2">📞</span>
+                Contact Us Today
+              </Link>
+              <Link 
+                href="/about" 
+                className="inline-flex items-center justify-center border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:bg-white hover:text-blue-600 text-sm sm:text-base"
+              >
+                <span className="mr-2">👨‍⚕️</span>
+                Meet Joe Kiere, RN
+              </Link>
+            </div>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+
+      <Footer />
+    </>
+  )
 }
