@@ -7,21 +7,97 @@ export default function Admissions() {
   return (
     <>
       <Head>
-        <title>Admissions | Westford Homes</title>
-        <meta
-          name="description"
-          content="Learn how to enroll your loved one into Westford Homes. Simple, guided steps to help you every step of the way."
-        />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Admissions | Westford Homes" />
-        <meta
-          property="og:description"
-          content="Discover the admissions process at Westford Homes. We're here to make transitions smooth and stress-free."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://westfordhomes.com/admissions" />
-        <meta property="og:image" content="/assets/admissions.jpg" />
-      </Head>
+          <title>Admissions Process | Westford Homes Senior Care | Assisted Living Enrollment</title>
+          <meta
+            name="description"
+            content="Start your loved one's journey at Westford Homes with our simple 5-step admissions process. Schedule tours, health assessments, and personalized care plans. Call (958) 881-8055 for assisted living enrollment."
+          />
+          <meta name="keywords" content="assisted living admissions, senior care enrollment, elderly care admissions, nursing home admissions, Westford Homes, senior living admissions process, care home enrollment" />
+          <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+          <meta name="author" content="Westford Homes" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+          <meta name="language" content="en-US" />
+          
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="Admissions Process | Westford Homes Senior Care" />
+          <meta
+            property="og:description"
+            content="Discover our compassionate 5-step admissions process at Westford Homes. We make transitions smooth and stress-free for your loved ones."
+          />
+          <meta property="og:url" content="https://westfordhomesinc.com/admissions" />
+          <meta property="og:image" content="https://westfordhomesinc.com/assets/admissions.jpg" />
+          <meta property="og:image:alt" content="Westford Homes admissions process - caring staff helping seniors" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:site_name" content="Westford Homes" />
+          <meta property="og:locale" content="en_US" />
+          
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="Admissions Process | Westford Homes Senior Care" />
+          <meta
+            name="twitter:description"
+            content="Start your loved one's journey at Westford Homes with our simple 5-step admissions process. Personalized care, comprehensive tours, and compassionate support."
+          />
+          <meta name="twitter:image" content="https://westfordhomesinc.com/assets/admissions.jpg" />
+          <meta name="twitter:image:alt" content="Westford Homes admissions process" />
+          
+          <link rel="canonical" href="https://westfordhomesinc.com/admissions" />
+          
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebPage",
+                "name": "Admissions Process | Westford Homes Senior Care",
+                "description": "Start your loved one's journey at Westford Homes with our simple 5-step admissions process. Schedule tours, health assessments, and personalized care plans.",
+                "url": "https://westfordhomesinc.com/admissions",
+                "mainEntity": {
+                  "@type": "Organization",
+                  "name": "Westford Homes",
+                  "url": "https://westfordhomesinc.com",
+                  "logo": "https://westfordhomesinc.com/assets/logo.png",
+                  "contactPoint": {
+                    "@type": "ContactPoint",
+                    "telephone": "+1-958-881-8055",
+                    "contactType": "Customer Service",
+                    "email": "westfordhomesinc@gmail.com",
+                    "availableLanguage": "en-US"
+                  },
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "US"
+                  },
+                  "sameAs": []
+                },
+                "breadcrumb": {
+                  "@type": "BreadcrumbList",
+                  "itemListElement": [
+                    {
+                      "@type": "ListItem",
+                      "position": 1,
+                      "name": "Home",
+                      "item": "https://westfordhomesinc.com"
+                    },
+                    {
+                      "@type": "ListItem",
+                      "position": 2,
+                      "name": "Admissions",
+                      "item": "https://westfordhomesinc.com/admissions"
+                    }
+                  ]
+                },
+                "provider": {
+                  "@type": "Organization",
+                  "name": "Westford Homes",
+                  "serviceType": "Senior Care Services",
+                  "areaServed": "US"
+                }
+              })
+            }}
+          />
+        </Head>
 
       <Header />
 
@@ -68,8 +144,8 @@ export default function Admissions() {
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <h3 className="font-semibold text-[#2B5699] mb-3">Quick Contact</h3>
                 <div className="space-y-2 text-gray-700">
-                  <p><strong>Phone:</strong> +1 (234) 567-890</p>
-                  <p><strong>Email:</strong> admissions@westfordhomes.com</p>
+                  <p><strong>Phone:</strong> (958) 881-8055</p>
+                  <p><strong>Email:</strong> westfordhomesinc@gmail.com</p>
                   <p><strong>Hours:</strong> Mon-Fri 8AM-6PM, Sat 9AM-4PM</p>
                   <p><strong>Emergency:</strong> 24/7 support available</p>
                 </div>
@@ -169,7 +245,7 @@ export default function Admissions() {
                     Call Us Today
                   </a>
                   <a 
-                    href="mailto:info@westfordhomes.com" 
+                    href="mailto:westfordhomesinc@gmail.com" 
                     className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
                   >
                     Email Us

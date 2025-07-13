@@ -58,20 +58,115 @@ export default function About() {
   return (
     <>
       <Head>
-        <title>About Us | Westford Homes</title>
+        <title>About Joe Kiere, RN - Westford Homes Adult Family Care | Oregon Senior Care</title>
         <meta
           name="description"
-          content="Hi! I'm Joe Kiere, RN. With 15+ years in nursing, I'm dedicated to offering senior care that feels like home at Westford Homes."
+          content="Meet Joe Kiere, RN, founder of Westford Homes Adult Family Care. 15+ years nursing experience in geriatrics, dementia & mental health. Licensed adult family home in Oregon providing compassionate senior care."
         />
+        <meta name="keywords" content="Joe Kiere RN, Westford Homes, adult family home Oregon, senior care, dementia care, mental health elderly, geriatric nursing, assisted living alternative, Oregon AFH, memory care" />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="About Us | Westford Homes" />
+        <meta name="author" content="Joe Kiere, RN" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="canonical" href="https://westfordhomesinc.com/about" />
+        
+        {/* Open Graph Tags */}
+        <meta property="og:title" content="About Joe Kiere, RN - Westford Homes Adult Family Care | Oregon Senior Care" />
         <meta
           property="og:description"
-          content="Meet Joe Kiere, founder of Westford Homes. Learn about our mission and personalized senior care approach."
+          content="Meet Joe Kiere, RN, founder of Westford Homes Adult Family Care. 15+ years nursing experience in geriatrics, dementia & mental health. Licensed adult family home in Oregon."
         />
-        <meta property="og:image" content="/images/joe-profile.jpg" />
+        <meta property="og:image" content="https://westfordhomesinc.com/assets/joe-kiere.jpg" />
+        <meta property="og:image:alt" content="Joe Kiere, RN - Founder of Westford Homes Adult Family Care" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://westfordhomes.com/about" />
+        <meta property="og:url" content="https://westfordhomesinc.com/about" />
+        <meta property="og:site_name" content="Westford Homes" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter Card Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="About Joe Kiere, RN - Westford Homes Adult Family Care" />
+        <meta name="twitter:description" content="Meet Joe Kiere, RN, founder of Westford Homes Adult Family Care. 15+ years nursing experience in geriatrics, dementia & mental health." />
+        <meta name="twitter:image" content="https://westfordhomesinc.com/assets/joe-kiere.jpg" />
+        <meta name="twitter:image:alt" content="Joe Kiere, RN - Founder of Westford Homes Adult Family Care" />
+        
+        {/* Local Business Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Joe Kiere",
+              "jobTitle": "Registered Nurse & Founder",
+              "worksFor": {
+                "@type": "HealthAndBeautyBusiness",
+                "name": "Westford Homes Adult Family Care",
+                "@id": "https://westfordhomesinc.com",
+                "url": "https://westfordhomesinc.com",
+                "telephone": "503-XXX-XXXX",
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressLocality": "Oregon",
+                  "addressCountry": "US"
+                },
+                "description": "Licensed adult family home providing compassionate senior care with specialization in dementia and mental health care",
+                "priceRange": "$",
+                "hasOfferCatalog": {
+                  "@type": "OfferCatalog",
+                  "name": "Adult Family Home Services",
+                  "itemListElement": [
+                    {
+                      "@type": "Offer",
+                      "itemOffered": {
+                        "@type": "Service",
+                        "name": "Dementia Care",
+                        "description": "Specialized care for residents with dementia and Alzheimer's disease"
+                      }
+                    },
+                    {
+                      "@type": "Offer",
+                      "itemOffered": {
+                        "@type": "Service",
+                        "name": "Mental Health Care",
+                        "description": "Mental health support for elderly residents"
+                      }
+                    },
+                    {
+                      "@type": "Offer",
+                      "itemOffered": {
+                        "@type": "Service",
+                        "name": "Hospice Care",
+                        "description": "End-of-life care and support for families"
+                      }
+                    }
+                  ]
+                }
+              },
+              "alumniOf": "Nursing School",
+              "hasCredential": [
+                {
+                  "@type": "EducationalOccupationalCredential",
+                  "name": "Registered Nurse License"
+                },
+                {
+                  "@type": "EducationalOccupationalCredential", 
+                  "name": "Adult Foster Home License"
+                },
+                {
+                  "@type": "EducationalOccupationalCredential",
+                  "name": "Mental Health Specialty Designation"
+                },
+                {
+                  "@type": "EducationalOccupationalCredential",
+                  "name": "Dementia Care Specialty Designation"
+                }
+              ],
+              "knowsAbout": ["Geriatric Care", "Dementia Care", "Mental Health", "Hospice Care", "Adult Family Homes"],
+              "yearsOfExperience": "15+"
+            })
+          }}
+        />
       </Head>
 
       <Header />

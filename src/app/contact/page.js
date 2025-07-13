@@ -84,9 +84,185 @@ export default function ContactPage() {
   return (
     <>
       <Head>
-        <title>Contact | Westford Homes</title>
-        <meta name="description" content="For questions about care, cost, services, or availability, contact Westford Homes by phone, email, or visit us." />
-        <link rel="canonical" href="https://westfordhomes.com/contact" />
+        <title>Contact Westford Homes Adult Family Care | Wilsonville, Oregon</title>
+        <meta name="description" content="Contact Westford Homes Adult Family Care in Wilsonville, Oregon. Call (978) 881-8055 or email us for questions about senior care services, costs, and availability. 24/7 compassionate care." />
+        <meta name="keywords" content="adult family home contact, senior care Wilsonville Oregon, assisted living contact, elder care services, memory care contact, adult family care phone number" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="author" content="Westford Homes Adult Family Care" />
+        <meta name="geo.region" content="US-OR" />
+        <meta name="geo.placename" content="Wilsonville, Oregon" />
+        <meta name="geo.position" content="45.3311;-122.7644" />
+        <meta name="ICBM" content="45.3311, -122.7644" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://westfordhomesinc.com/contact" />
+        <meta property="og:title" content="Contact Westford Homes Adult Family Care | Wilsonville, Oregon" />
+        <meta property="og:description" content="Contact Westford Homes Adult Family Care in Wilsonville, Oregon. Call (978) 881-8055 or email us for questions about senior care services, costs, and availability. 24/7 compassionate care." />
+        <meta property="og:image" content="https://westfordhomesinc.com/images/westford-homes-contact.jpg" />
+        <meta property="og:image:alt" content="Westford Homes Adult Family Care contact information" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:site_name" content="Westford Homes Adult Family Care" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://westfordhomesinc.com/contact" />
+        <meta name="twitter:title" content="Contact Westford Homes Adult Family Care | Wilsonville, Oregon" />
+        <meta name="twitter:description" content="Contact Westford Homes Adult Family Care in Wilsonville, Oregon. Call (978) 881-8055 or email us for questions about senior care services, costs, and availability." />
+        <meta name="twitter:image" content="https://westfordhomesinc.com/images/westford-homes-contact.jpg" />
+        
+        {/* Canonical and alternate URLs */}
+        <link rel="canonical" href="https://westfordhomesinc.com/contact" />
+        <link rel="alternate" hrefLang="en-us" href="https://westfordhomesinc.com/contact" />
+        
+        {/* Structured Data - Local Business */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SeniorCare",
+              "name": "Westford Homes Adult Family Care",
+              "description": "Adult family home providing compassionate senior care and assisted living services in Wilsonville, Oregon",
+              "url": "https://westfordhomesinc.com",
+              "telephone": "(978) 881-8055",
+              "email": "westfordhomesinc@gmail.com",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "6770 SW Molalla Bend Road",
+                "addressLocality": "Wilsonville",
+                "addressRegion": "OR",
+                "postalCode": "97070",
+                "addressCountry": "US"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 45.3311,
+                "longitude": -122.7644
+              },
+              "openingHours": "Mo-Su 00:00-23:59",
+              "priceRange": "$$",
+              "image": "https://westfordhomesinc.com/images/westford-homes-facility.jpg",
+              "serviceArea": {
+                "@type": "City",
+                "name": "Wilsonville",
+                "addressRegion": "OR"
+              },
+              "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Senior Care Services",
+                "itemListElement": [
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Adult Family Home Care",
+                      "description": "24/7 residential care for seniors"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Assisted Living Services",
+                      "description": "Daily living assistance and support"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Memory Care",
+                      "description": "Specialized care for dementia and Alzheimer's"
+                    }
+                  }
+                ]
+              },
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "(978) 881-8055",
+                "contactType": "customer service",
+                "availableLanguage": "English"
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5.0",
+                "reviewCount": "50"
+              }
+            })
+          }}
+        />
+        
+        {/* Breadcrumb Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://westfordhomesinc.com"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Contact",
+                  "item": "https://westfordhomesinc.com/contact"
+                }
+              ]
+            })
+          }}
+        />
+        
+        {/* Contact Page Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ContactPage",
+              "name": "Contact Westford Homes Adult Family Care",
+              "description": "Contact information and form for Westford Homes Adult Family Care in Wilsonville, Oregon",
+              "url": "https://westfordhomesinc.com/contact",
+              "mainEntity": {
+                "@type": "SeniorCare",
+                "name": "Westford Homes Adult Family Care",
+                "telephone": "(978) 881-8055",
+                "email": "westfordhomesinc@gmail.com"
+              }
+            })
+          }}
+        />
+        
+        {/* Favicon and app icons */}
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        
+        {/* Preconnect to external domains */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.google.com" />
+        <link rel="preconnect" href="https://maps.googleapis.com" />
+        
+        {/* Additional meta tags */}
+        <meta name="theme-color" content="#2B5699" />
+        <meta name="format-detection" content="telephone=yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Westford Homes Contact" />
+        
+        {/* Hreflang for international SEO if needed */}
+        <link rel="alternate" hrefLang="x-default" href="https://westfordhomesinc.com/contact" />
       </Head>
 
       <Header />

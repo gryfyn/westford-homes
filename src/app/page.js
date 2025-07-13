@@ -148,22 +148,335 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Westford Homes | Adult Foster Home in Wilsonville, Oregon</title>
+        {/* Primary Meta Tags */}
+        <title>Westford Homes Inc | Licensed Adult Foster Care in Wilsonville, Oregon | 24/7 Senior Care Services</title>
         <meta
           name="description"
-          content="Adult Foster Home located at Charbonneau District in Wilsonville, Oregon. Receive safe and competent personal care at adult Foster home licensed in Clackamas county Oregon."
+          content="Westford Homes Inc - Licensed adult foster care home in Wilsonville, Oregon's Charbonneau District. Professional 24/7 skilled nursing, wheelchair accessible facility, specialized dementia & hospice care. Affordable alternative to nursing homes."
         />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Westford Homes | Adult Foster Home in Wilsonville, Oregon" />
+        <meta name="keywords" content="Westford Homes Inc, adult foster care, Wilsonville Oregon, senior care services, assisted living alternative, dementia care specialists, hospice care, wheelchair accessible facility, 24/7 nursing care, Clackamas County, Charbonneau District, nursing home alternative, elderly care, memory care, respite care, long-term care, skilled nursing facility" />
+        <meta name="author" content="Westford Homes Inc" />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="language" content="en-US" />
+        <link rel="canonical" href="https://westfordhomesinc.com/" />
+
+        {/* Enhanced Local SEO */}
+        <meta name="geo.region" content="US-OR" />
+        <meta name="geo.placename" content="Wilsonville, Oregon" />
+        <meta name="geo.position" content="45.2988;-122.7736" />
+        <meta name="ICBM" content="45.2988, -122.7736" />
+        <meta name="coverage" content="Worldwide" />
+        <meta name="distribution" content="Global" />
+        <meta name="rating" content="General" />
+
+        {/* Open Graph Meta Tags */}
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Westford Homes Inc | Licensed Adult Foster Care in Wilsonville, Oregon" />
         <meta
           property="og:description"
-          content="Caring for Local Seniors with loving and personalized senior care. An excellent alternative to institutional assisted living and nursing home facilities."
+          content="Professional adult foster care home in Wilsonville, Oregon. 24/7 skilled nursing, wheelchair accessible, specialized dementia & hospice care. Affordable alternative to nursing homes."
         />
-        <meta property="og:image" content="/images/westford-homes-hero.jpg" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://westfordhomes.com" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta property="og:url" content="https://westfordhomesinc.com/" />
+        <meta property="og:site_name" content="Westford Homes Inc" />
+        <meta property="og:image" content="https://westfordhomesinc.com/assets/westford-homes-oregon.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Westford Homes Inc - Licensed Adult Foster Care Facility in Wilsonville, Oregon" />
+        <meta property="og:image:type" content="image/jpeg" />
+
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@WestfordHomesInc" />
+        <meta name="twitter:title" content="Westford Homes Inc | Licensed Adult Foster Care in Wilsonville, Oregon" />
+        <meta name="twitter:description" content="Professional adult foster care home in Wilsonville, Oregon. 24/7 skilled nursing, wheelchair accessible, specialized dementia & hospice care services." />
+        <meta name="twitter:image" content="https://westfordhomesinc.com/assets/westford-homes-oregon.jpg" />
+        <meta name="twitter:image:alt" content="Westford Homes Inc Adult Foster Care Facility" />
+
+        {/* Additional SEO Meta Tags */}
+        <meta name="theme-color" content="#2563eb" />
+        <meta name="msapplication-TileColor" content="#2563eb" />
+        <meta name="application-name" content="Westford Homes Inc" />
+        <meta name="apple-mobile-web-app-title" content="Westford Homes Inc" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="format-detection" content="telephone=yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+
+        {/* Business Contact Information */}
+        <meta name="business:contact_data:street_address" content="Charbonneau District, Wilsonville" />
+        <meta name="business:contact_data:locality" content="Wilsonville" />
+        <meta name="business:contact_data:region" content="Oregon" />
+        <meta name="business:contact_data:postal_code" content="97070" />
+        <meta name="business:contact_data:country_name" content="United States" />
+        <meta name="business:contact_data:phone_number" content="+1-503-XXX-XXXX" />
+
+        {/* Alternate Language Links (if applicable) */}
+        <link rel="alternate" hrefLang="en-US" href="https://westfordhomesinc.com/" />
+        <link rel="alternate" hrefLang="x-default" href="https://westfordhomesinc.com/" />
+
+        {/* Preconnect for Performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+        {/* JSON-LD Structured Data - Enhanced */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "NursingHome",
+              "name": "Westford Homes Inc",
+              "alternateName": "Westford Homes",
+              "description": "Licensed adult foster care home in Wilsonville, Oregon providing comprehensive 24/7 skilled nursing care, wheelchair accessible facilities, specialized dementia and hospice care services. Professional alternative to traditional nursing homes.",
+              "url": "https://westfordhomesinc.com",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://westfordhomesinc.com/westford-logo.PNG",
+                "width": 300,
+                "height": 100
+              },
+              "image": [
+                {
+                  "@type": "ImageObject",
+                  "url": "https://westfordhomesinc.com/assets/westford-homes-oregon.jpg",
+                  "width": 1200,
+                  "height": 630
+                },
+                {
+                  "@type": "ImageObject",
+                  "url": "https://westfordhomesinc.com/assets/interior-caring.jpg",
+                  "width": 600,
+                  "height": 400
+                }
+              ],
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Charbonneau District",
+                "addressLocality": "Wilsonville",
+                "addressRegion": "Oregon",
+                "postalCode": "97070",
+                "addressCountry": "US"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "45.2988",
+                "longitude": "-122.7736"
+              },
+              "telephone": "+1-503-XXX-XXXX",
+              "email": "info@westfordhomesinc.com",
+              "priceRange": "$$",
+              "currenciesAccepted": "USD",
+              "paymentAccepted": "Cash, Check, Insurance, Medicaid, Medicare",
+              "openingHours": "Mo-Su 00:00-23:59",
+              "foundingDate": "2020",
+              "founder": {
+                "@type": "Person",
+                "name": "Joe Kiere",
+                "jobTitle": "Registered Nurse",
+                "description": "Licensed Registered Nurse with extensive experience in senior care"
+              },
+              "serviceArea": {
+                "@type": "GeoCircle",
+                "geoMidpoint": {
+                  "@type": "GeoCoordinates",
+                  "latitude": "45.2988",
+                  "longitude": "-122.7736"
+                },
+                "geoRadius": "50000"
+              },
+              "areaServed": [
+                "Wilsonville, Oregon",
+                "Clackamas County",
+                "Portland Metro Area",
+                "Oregon"
+              ],
+              "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Adult Foster Care Services",
+                "itemListElement": [
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "MedicalService",
+                      "name": "24/7 Skilled Nursing Care",
+                      "description": "Round-the-clock professional nursing care for seniors with comprehensive health monitoring",
+                      "provider": {
+                        "@type": "Organization",
+                        "name": "Westford Homes Inc"
+                      }
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "MedicalService",
+                      "name": "Dementia and Memory Care",
+                      "description": "Specialized care for residents with dementia, Alzheimer's, and memory-related conditions",
+                      "provider": {
+                        "@type": "Organization",
+                        "name": "Westford Homes Inc"
+                      }
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "MedicalService",
+                      "name": "Hospice and End-of-Life Care",
+                      "description": "Compassionate end-of-life care services with dignity and comfort",
+                      "provider": {
+                        "@type": "Organization",
+                        "name": "Westford Homes Inc"
+                      }
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Wheelchair Accessible Facilities",
+                      "description": "Fully wheelchair accessible facility with wide hallways and roll-in showers",
+                      "provider": {
+                        "@type": "Organization",
+                        "name": "Westford Homes Inc"
+                      }
+                    }
+                  }
+                ]
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5",
+                "reviewCount": "3",
+                "bestRating": "5",
+                "worstRating": "1"
+              },
+              "review": [
+                {
+                  "@type": "Review",
+                  "author": {
+                    "@type": "Person",
+                    "name": "Annamarie & Terilynn"
+                  },
+                  "datePublished": "2023-09-17",
+                  "reviewBody": "I can't say enough good things about Joe and his staff. It has meant the world to us to know such great people are taking care of mom. She has become more alert and interactive since being at Joe's. It feels like a home. It is always very clean, very welcoming, and lively. We know she is safe and well taken care of.",
+                  "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": "5",
+                    "bestRating": "5",
+                    "worstRating": "1"
+                  }
+                },
+                {
+                  "@type": "Review",
+                  "author": {
+                    "@type": "Person",
+                    "name": "Doug S."
+                  },
+                  "datePublished": "2023-09-05",
+                  "reviewBody": "Westford Homes truly is a home! Very caring, friendly, and helpful staff. Willing to do whatever it takes to make my spouse's stay as safe and comfortable as possible. Would highly recommend them!",
+                  "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": "5",
+                    "bestRating": "5",
+                    "worstRating": "1"
+                  }
+                }
+              ],
+              "amenityFeature": [
+                {
+                  "@type": "LocationFeatureSpecification",
+                  "name": "Wheelchair Accessible",
+                  "value": true
+                },
+                {
+                  "@type": "LocationFeatureSpecification",
+                  "name": "24/7 Nursing Care",
+                  "value": true
+                },
+                {
+                  "@type": "LocationFeatureSpecification",
+                  "name": "Private Bedrooms",
+                  "value": true
+                },
+                {
+                  "@type": "LocationFeatureSpecification",
+                  "name": "Outdoor Space",
+                  "value": true
+                },
+                {
+                  "@type": "LocationFeatureSpecification",
+                  "name": "Roll-in Showers",
+                  "value": true
+                }
+              ],
+              "knowsAbout": [
+                "Adult Foster Care",
+                "Senior Care",
+                "Dementia Care",
+                "Hospice Care",
+                "Skilled Nursing",
+                "Wheelchair Accessibility",
+                "Memory Care",
+                "End-of-Life Care"
+              ],
+              "sameAs": [
+                "https://www.facebook.com/WestfordHomesInc",
+                "https://www.linkedin.com/company/westford-homes-inc"
+              ]
+            })
+          }}
+        />
+
+        {/* Additional JSON-LD for FAQ */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "What is adult foster care?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Adult foster care is a residential care option that provides personalized care and support services to elderly or disabled adults in a home-like environment. It's an alternative to nursing homes and assisted living facilities."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Is Westford Homes Inc wheelchair accessible?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, Westford Homes Inc is fully wheelchair accessible with wide hallways, roll-in showers, and wheelchair-accessible outdoor spaces."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What types of care do you provide?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "We provide comprehensive care from light assistance to end-of-life care, including 24/7 skilled nursing, dementia care, hospice care, and personal care services."
+                  }
+                }
+              ]
+            })
+          }}
+        />
+
+        {/* Favicon and Icons */}
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#2563eb" />
+        <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
       </Head>
+
 
       <Header />
 

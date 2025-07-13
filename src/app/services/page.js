@@ -79,16 +79,280 @@ export default function Services() {
 
   return (
     <>
-      <Head>
-        <title>Our Services | Westford Homes</title>
-        <meta name="description" content="Westford Homes offers personal care, memory care, and respite services for your loved ones in a home-like environment." />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Our Services - Westford Homes" />
-        <meta property="og:description" content="Explore our compassionate personal care, memory care, and respite services tailored for seniors." />
-        <meta property="og:image" content="/assets/care-icon.png" />
-        <meta property="og:url" content="https://yourdomain.com/services" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Head>
+
+  <Head>
+    {/* Primary Meta Tags */}
+    <title>Comprehensive Care Services - Westford Homes | Assisted Living & Senior Care in Wilsonville, Oregon</title>
+    <meta name="title" content="Comprehensive Care Services - Westford Homes | Assisted Living & Senior Care in Wilsonville, Oregon" />
+    <meta name="description" content="Discover comprehensive care services at Westford Homes in Wilsonville, Oregon. Professional registered nurse care, medication management, dementia care, personal care, and specialized meal services. Call (978) 881-8055." />
+    <meta name="keywords" content="assisted living services, senior care services, registered nurse care, medication management, dementia care, memory care, personal care, ADL assistance, meal services, health monitoring, Wilsonville Oregon, Charbonneau District" />
+    
+    {/* Canonical URL */}
+    <link rel="canonical" href="https://westfordhomesinc.com/services" />
+    
+    {/* Open Graph / Facebook */}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://westfordhomesinc.com/services" />
+    <meta property="og:title" content="Comprehensive Care Services - Westford Homes" />
+    <meta property="og:description" content="Professional care services including registered nurse supervision, medication management, dementia care, and personalized support in Wilsonville, Oregon." />
+    <meta property="og:image" content="https://westfordhomesinc.com/assets/care-services-og.jpg" />
+    <meta property="og:site_name" content="Westford Homes" />
+    <meta property="og:locale" content="en_US" />
+    
+    {/* Twitter */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Comprehensive Care Services - Westford Homes" />
+    <meta name="twitter:description" content="Professional care services including registered nurse supervision, medication management, dementia care, and personalized support in Wilsonville, Oregon." />
+    <meta name="twitter:image" content="https://westfordhomesinc.com/assets/care-services-twitter.jpg" />
+    <meta name="twitter:site" content="@WestfordHomes" />
+    
+    {/* Additional SEO Meta Tags */}
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="Westford Homes" />
+    <meta name="geo.region" content="US-OR" />
+    <meta name="geo.placename" content="Wilsonville, Oregon" />
+    <meta name="geo.position" content="45.2979;-122.7739" />
+    <meta name="ICBM" content="45.2979, -122.7739" />
+    
+    {/* Mobile Optimization */}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=yes" />
+    <meta name="theme-color" content="#2B5699" />
+    
+    {/* Structured Data for Services */}
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "MedicalBusiness",
+          "name": "Westford Homes",
+          "description": "Comprehensive assisted living and senior care services in Wilsonville, Oregon",
+          "url": "https://westfordhomesinc.com/services",
+          "telephone": "(978) 881-8055",
+          "email": "westfordhomesinc@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Wilsonville",
+            "addressRegion": "OR",
+            "addressCountry": "US"
+          },
+          "serviceArea": {
+            "@type": "Place",
+            "name": "Wilsonville, Oregon and surrounding areas"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Care Services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Registered Nurse Care",
+                  "description": "Professional registered nurse supervision and care management with over 15 years of experience"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Medication Management",
+                  "description": "Complete medication tracking, administration, reordering, and management services"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Dementia and Memory Care",
+                  "description": "Specialized care for Alzheimer's Disease and other cognitive and memory care needs"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Personal Care and ADLs",
+                  "description": "Comprehensive personal care including bathing, hygiene, transfers, grooming, and feeding assistance"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Meal Services",
+                  "description": "Freshly prepared meals with specialized diet accommodations including low salt, diabetic, and pureed options"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Health Monitoring",
+                  "description": "Continuous health monitoring with registered nurse on-site and direct doctor coordination"
+                }
+              }
+            ]
+          },
+          "priceRange": "$$",
+          "paymentAccepted": "Cash, Check, Insurance",
+          "openingHours": "Mo-Su 00:00-23:59"
+        })
+      }}
+    />
+    
+    {/* FAQ Structured Data */}
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What services does Westford Homes provide?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Westford Homes provides comprehensive care services including registered nurse supervision, medication management, dementia and memory care, personal care and ADL assistance, specialized meal services, health monitoring, and individualized care planning."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do you provide dementia and memory care services?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, we hold dementia and mental health specialty certifications and can accommodate Alzheimer's Disease and other cognitive and memory care needs with specialized care plans."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is there a registered nurse on staff?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, Joe Kiere, RN, manages and supervises all care and services with over 15 years of experience in the field, ensuring professional medical oversight."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What type of meal services do you offer?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "We serve freshly prepared meals and snacks daily, accommodating specialized diets such as low salt, low fat, diabetic, and pureed or mechanical soft diets."
+              }
+            }
+          ]
+        })
+      }}
+    />
+    
+    {/* Breadcrumb Structured Data */}
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://westfordhomesinc.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Services",
+              "item": "https://westfordhomesinc.com/services"
+            }
+          ]
+        })
+      }}
+    />
+    
+    {/* Local Business Structured Data */}
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "name": "Westford Homes",
+          "description": "Professional assisted living and senior care services in Wilsonville, Oregon",
+          "url": "https://westfordhomesinc.com",
+          "telephone": "(978) 881-8055",
+          "email": "westfordhomesinc@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Wilsonville",
+            "addressRegion": "OR",
+            "addressCountry": "US"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 45.2979,
+            "longitude": -122.7739
+          },
+          "openingHours": "Mo-Su 00:00-23:59",
+          "priceRange": "$$",
+          "paymentAccepted": "Cash, Check, Insurance"
+        })
+      }}
+    />
+    
+    {/* Preload critical resources */}
+    <link rel="preload" href="/assets/westford-logo.PNG" as="image" type="image/png" />
+    <link rel="preload" href="/fonts/main-font.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+    
+    {/* Alternate language tags (if applicable) */}
+    <link rel="alternate" hrefLang="en" href="https://westfordhomesinc.com/services" />
+    <link rel="alternate" hrefLang="x-default" href="https://westfordhomesinc.com/services" />
+    
+    {/* Additional meta tags for better indexing */}
+    <meta name="category" content="Healthcare, Senior Care, Assisted Living" />
+    <meta name="coverage" content="Worldwide" />
+    <meta name="distribution" content="Global" />
+    <meta name="rating" content="General" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="target" content="seniors, families, caregivers" />
+    
+    {/* Structured data for organization */}
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Westford Homes",
+          "url": "https://westfordhomesinc.com",
+          "logo": "https://westfordhomesinc.com/assets/westford-logo.PNG",
+          "description": "Professional assisted living and senior care services providing compassionate care in Wilsonville, Oregon",
+          "telephone": "(978) 881-8055",
+          "email": "westfordhomesinc@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Wilsonville",
+            "addressRegion": "OR",
+            "addressCountry": "US"
+          },
+          "sameAs": [
+            "https://www.facebook.com/westfordhomes",
+            "https://www.linkedin.com/company/westford-homes"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "(978) 881-8055",
+            "email": "westfordhomesinc@gmail.com",
+            "contactType": "Customer Service",
+            "availableLanguage": "English"
+          }
+        })
+      }}
+    />
+  </Head>
+
 
       <Header />
 
