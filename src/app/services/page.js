@@ -10,6 +10,7 @@ import { useState } from 'react'
 
 export default function Services() {
   const [hoveredCard, setHoveredCard] = useState(null)
+  const [activeTab, setActiveTab] = useState('family')
 
   const services = [
     {
@@ -417,6 +418,216 @@ export default function Services() {
             ))}
           </div>
 
+          {/* Activities and Events Section */}
+          <div className="mt-20">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4" style={{ color: '#2B5699' }}>
+                Life at Westford Homes
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6"></div>
+              <p className="text-gray-700 text-lg max-w-3xl mx-auto">
+                We believe in creating meaningful experiences and maintaining strong connections with family and community.
+              </p>
+            </div>
+
+            {/* Tab Navigation */}
+            <div className="flex justify-center mb-8">
+              <div className="bg-white rounded-lg shadow-md p-1 flex">
+                <button
+                  onClick={() => setActiveTab('family')}
+                  className={`px-6 py-3 rounded-md font-medium transition-all duration-300 ${
+                    activeTab === 'family'
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : 'text-gray-600 hover:text-blue-600'
+                  }`}
+                >
+                  Family Visits
+                </button>
+                <button
+                  onClick={() => setActiveTab('activities')}
+                  className={`px-6 py-3 rounded-md font-medium transition-all duration-300 ${
+                    activeTab === 'activities'
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : 'text-gray-600 hover:text-blue-600'
+                  }`}
+                >
+                  Activities
+                </button>
+                <button
+                  onClick={() => setActiveTab('birthdays')}
+                  className={`px-6 py-3 rounded-md font-medium transition-all duration-300 ${
+                    activeTab === 'birthdays'
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : 'text-gray-600 hover:text-blue-600'
+                  }`}
+                >
+                  Birthday Celebrations
+                </button>
+              </div>
+            </div>
+
+            {/* Tab Content */}
+            <div className="bg-white rounded-2xl shadow-lg p-8 min-h-96">
+              {activeTab === 'family' && (
+                <div className="animate-fade-in">
+                  <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: '#2B5699' }}>
+                    Family Visits & Holiday Celebrations
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div>
+                      <p className="text-gray-700 text-lg mb-6 leading-relaxed">
+                        We encourage regular family visits and create special opportunities for families to connect during holidays and special occasions. These precious moments help maintain strong family bonds and create lasting memories.
+                      </p>
+                      <ul className="space-y-3 text-gray-600">
+                        <li className="flex items-start">
+                          <span className="text-blue-600 mr-2">•</span>
+                          Regular family visit hours with comfortable gathering spaces
+                        </li>
+                        <li className="flex items-start">
+                          <span className="text-blue-600 mr-2">•</span>
+                          Special holiday celebrations with family involvement
+                        </li>
+                        <li className="flex items-start">
+                          <span className="text-blue-600 mr-2">•</span>
+                          Family dinner opportunities and special events
+                        </li>
+                        <li className="flex items-start">
+                          <span className="text-blue-600 mr-2">•</span>
+                          Seasonal gatherings and community celebrations
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      {/* Placeholder for family visit images */}
+                      <div className="bg-gray-100 rounded-lg h-32 flex items-center justify-center">
+                        <span className="text-gray-400 text-sm">Family Visit Photo</span>
+                      </div>
+                      <div className="bg-gray-100 rounded-lg h-32 flex items-center justify-center">
+                        <span className="text-gray-400 text-sm">Holiday Celebration</span>
+                      </div>
+                      <div className="bg-gray-100 rounded-lg h-32 flex items-center justify-center">
+                        <span className="text-gray-400 text-sm">Family Gathering</span>
+                      </div>
+                      <div className="bg-gray-100 rounded-lg h-32 flex items-center justify-center">
+                        <span className="text-gray-400 text-sm">Special Event</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'activities' && (
+                <div className="animate-fade-in">
+                  <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: '#2B5699' }}>
+                    Daily Activities & Enrichment Programs
+                  </h3>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6">
+                      <h4 className="font-semibold text-blue-700 mb-3">Professional Therapy</h4>
+                      <ul className="text-gray-600 space-y-2 text-sm">
+                        <li>• Music therapy sessions (1-2x weekly)</li>
+                        <li>• Group exercise with hired trainer</li>
+                        <li>• Therapeutic activities</li>
+                      </ul>
+                    </div>
+                    <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6">
+                      <h4 className="font-semibold text-green-700 mb-3">Entertainment</h4>
+                      <ul className="text-gray-600 space-y-2 text-sm">
+                        <li>• Movie nights</li>
+                        <li>• Live music performances</li>
+                        <li>• Community entertainment</li>
+                      </ul>
+                    </div>
+                    <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6">
+                      <h4 className="font-semibold text-purple-700 mb-3">Games & Recreation</h4>
+                      <ul className="text-gray-600 space-y-2 text-sm">
+                        <li>• Bingo games</li>
+                        <li>• Uno and card games</li>
+                        <li>• Board games</li>
+                      </ul>
+                    </div>
+                    <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-6">
+                      <h4 className="font-semibold text-orange-700 mb-3">Creative Arts</h4>
+                      <ul className="text-gray-600 space-y-2 text-sm">
+                        <li>• Coloring activities</li>
+                        <li>• Painting sessions</li>
+                        <li>• Craft projects</li>
+                      </ul>
+                    </div>
+                    <div className="bg-gradient-to-br from-teal-50 to-teal-100 rounded-lg p-6">
+                      <h4 className="font-semibold text-teal-700 mb-3">Physical Activities</h4>
+                      <ul className="text-gray-600 space-y-2 text-sm">
+                        <li>• Walks around the block</li>
+                        <li>• Staff-led exercises</li>
+                        <li>• Outdoor activities</li>
+                      </ul>
+                    </div>
+                    <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-lg p-6">
+                      <h4 className="font-semibold text-pink-700 mb-3">Daily Enrichment</h4>
+                      <ul className="text-gray-600 space-y-2 text-sm">
+                        <li>• Reading groups</li>
+                        <li>• Conversation circles</li>
+                        <li>• Cognitive activities</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'birthdays' && (
+                <div className="animate-fade-in">
+                  <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: '#2B5699' }}>
+                    Birthday Celebrations & Special Occasions
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div>
+                      <p className="text-gray-700 text-lg mb-6 leading-relaxed">
+                        Every birthday is a special milestone that deserves celebration. We create memorable birthday parties for each resident, complete with decorations, cake, and the joy of being surrounded by friends and family.
+                      </p>
+                      <ul className="space-y-3 text-gray-600">
+                        <li className="flex items-start">
+                          <span className="text-pink-600 mr-2">🎂</span>
+                          Personalized birthday celebrations for each resident
+                        </li>
+                        <li className="flex items-start">
+                          <span className="text-pink-600 mr-2">🎉</span>
+                          Festive decorations and party atmosphere
+                        </li>
+                        <li className="flex items-start">
+                          <span className="text-pink-600 mr-2">🎁</span>
+                          Special birthday cakes and treats
+                        </li>
+                        <li className="flex items-start">
+                          <span className="text-pink-600 mr-2">🎈</span>
+                          Family and friends invited to join the celebration
+                        </li>
+                        <li className="flex items-start">
+                          <span className="text-pink-600 mr-2">📸</span>
+                          Memory-making moments captured for families
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      {/* Placeholder for birthday celebration images */}
+                      <div className="bg-gradient-to-br from-pink-100 to-pink-200 rounded-lg h-32 flex items-center justify-center">
+                        <span className="text-pink-600 text-sm">Birthday Party</span>
+                      </div>
+                      <div className="bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-lg h-32 flex items-center justify-center">
+                        <span className="text-yellow-600 text-sm">Cake Cutting</span>
+                      </div>
+                      <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg h-32 flex items-center justify-center">
+                        <span className="text-purple-600 text-sm">Celebration</span>
+                      </div>
+                      <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg h-32 flex items-center justify-center">
+                        <span className="text-blue-600 text-sm">Happy Moments</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Call to Action Section */}
           <div className="mt-20 text-center bg-white rounded-2xl shadow-lg p-12 border-t-4 border-blue-500">
             <h2 className="text-3xl font-bold mb-4" style={{ color: '#2B5699' }}>
@@ -455,6 +666,7 @@ export default function Services() {
           opacity: 0;
         }
       `}</style>
+      
     </>
   )
 }

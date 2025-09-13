@@ -2,7 +2,7 @@
 import Head from 'next/head'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaHeart, FaUsers, FaHome, FaClock, FaCheckCircle } from 'react-icons/fa'
+import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaHeart, FaUsers, FaHome, FaClock, FaCheckCircle, FaFax } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
 
 export default function ContactPage() {
@@ -12,6 +12,8 @@ export default function ContactPage() {
     message: ''
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
@@ -40,7 +42,6 @@ export default function ContactPage() {
     { icon: FaClock, number: "< 24hr", label: "Response Time", color: "text-purple-500" }
   ]
 
-  // Fixed dependency warning by including testimonials.length
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
@@ -61,63 +62,73 @@ export default function ContactPage() {
       ...formData,
       [e.target.name]: e.target.value
     })
+    setError('') // Clear error on input change
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    
-    // Create mailto link with form data
-    const subject = `Contact Form Submission from ${formData.name}`
-    const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    const mailtoLink = `mailto:westfordhomesinc@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    
-    // Open default email client
-    window.location.href = mailtoLink
-    
-    setIsSubmitted(true)
-    setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({ name: '', email: '', message: '' })
-    }, 3000)
+    setIsLoading(true)
+    setError('')
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || 'Failed to send message')
+      }
+
+      setIsSubmitted(true)
+      setTimeout(() => {
+        setIsSubmitted(false)
+        setFormData({ name: '', email: '', message: '' })
+      }, 3000)
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again or contact us directly.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <>
       <Head>
-        <title>Contact Westford Homes Adult Family Care | Wilsonville, Oregon</title>
-        <meta name="description" content="Contact Westford Homes Adult Family Care in Wilsonville, Oregon. Call (978) 881-8055 or email us for questions about senior care services, costs, and availability. 24/7 compassionate care." />
-        <meta name="keywords" content="adult family home contact, senior care Wilsonville Oregon, assisted living contact, elder care services, memory care contact, adult family care phone number" />
+        <title>Contact Westford Homes Adult Family Care | Wilsonville & Tualatin, Oregon</title>
+        <meta name="description" content="Contact Westford Homes Adult Family Care in Wilsonville and Tualatin, Oregon. Call (978) 881-8055 or email us for questions about senior care services, costs, and availability. 24/7 compassionate care." />
+        <meta name="keywords" content="adult family home contact, senior care Wilsonville Oregon, senior care Tualatin Oregon, assisted living contact, elder care services, memory care contact, adult family care phone number" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="author" content="Westford Homes Adult Family Care" />
         <meta name="geo.region" content="US-OR" />
-        <meta name="geo.placename" content="Wilsonville, Oregon" />
-        <meta name="geo.position" content="45.3311;-122.7644" />
-        <meta name="ICBM" content="45.3311, -122.7644" />
+        <meta name="geo.placename" content="Wilsonville, Oregon; Tualatin, Oregon" />
+        <meta name="geo.position" content="45.3311;-122.7644;45.3768;-122.7467" />
+        <meta name="ICBM" content="45.3311, -122.7644; 45.3768, -122.7467" />
         
-        {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://westfordhomesinc.com/contact" />
-        <meta property="og:title" content="Contact Westford Homes Adult Family Care | Wilsonville, Oregon" />
-        <meta property="og:description" content="Contact Westford Homes Adult Family Care in Wilsonville, Oregon. Call (978) 881-8055 or email us for questions about senior care services, costs, and availability. 24/7 compassionate care." />
+        <meta property="og:title" content="Contact Westford Homes Adult Family Care | Wilsonville & Tualatin, Oregon" />
+        <meta property="og:description" content="Contact Westford Homes Adult Family Care in Wilsonville and Tualatin, Oregon. Call (978) 881-8055 or email us for questions about senior care services, costs, and availability. 24/7 compassionate care." />
         <meta property="og:image" content="https://westfordhomesinc.com/images/westford-homes-contact.jpg" />
         <meta property="og:image:alt" content="Westford Homes Adult Family Care contact information" />
         <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="Westford Homes Adult Family Care" />
         
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://westfordhomesinc.com/contact" />
-        <meta name="twitter:title" content="Contact Westford Homes Adult Family Care | Wilsonville, Oregon" />
-        <meta name="twitter:description" content="Contact Westford Homes Adult Family Care in Wilsonville, Oregon. Call (978) 881-8055 or email us for questions about senior care services, costs, and availability." />
+        <meta name="twitter:title" content="Contact Westford Homes Adult Family Care | Wilsonville & Tualatin, Oregon" />
+        <meta name="twitter:description" content="Contact Westford Homes Adult Family Care in Wilsonville and Tualatin, Oregon. Call (978) 881-8055 or email us for questions about senior care services, costs, and availability." />
         <meta name="twitter:image" content="https://westfordhomesinc.com/images/westford-homes-contact.jpg" />
         
-        {/* Canonical and alternate URLs */}
         <link rel="canonical" href="https://westfordhomesinc.com/contact" />
         <link rel="alternate" hrefLang="en-us" href="https://westfordhomesinc.com/contact" />
         
-        {/* Structured Data - Local Business */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -125,30 +136,51 @@ export default function ContactPage() {
               "@context": "https://schema.org",
               "@type": "SeniorCare",
               "name": "Westford Homes Adult Family Care",
-              "description": "Adult family home providing compassionate senior care and assisted living services in Wilsonville, Oregon",
+              "description": "Adult family home providing compassionate senior care and assisted living services in Wilsonville and Tualatin, Oregon",
               "url": "https://westfordhomesinc.com",
               "telephone": "(978) 881-8055",
               "email": "westfordhomesinc@gmail.com",
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "6770 SW Molalla Bend Road",
-                "addressLocality": "Wilsonville",
-                "addressRegion": "OR",
-                "postalCode": "97070",
-                "addressCountry": "US"
-              },
-              "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": 45.3311,
-                "longitude": -122.7644
-              },
+              "address": [
+                {
+                  "@type": "PostalAddress",
+                  "streetAddress": "6770 SW Molalla Bend Road",
+                  "addressLocality": "Wilsonville",
+                  "addressRegion": "OR",
+                  "postalCode": "97070",
+                  "addressCountry": "US"
+                },
+                {
+                  "@type": "PostalAddress",
+                  "streetAddress": "3030 SW 66th Ave",
+                  "addressLocality": "Tualatin",
+                  "addressRegion": "OR",
+                  "postalCode": "97062",
+                  "addressCountry": "US"
+                }
+              ],
+              "geo": [
+                {
+                  "@type": "GeoCoordinates",
+                  "latitude": 45.3311,
+                  "longitude": -122.7644
+                },
+                {
+                  "@type": "GeoCoordinates",
+                  "latitude": 45.3768,
+                  "longitude": -122.7467
+                }
+              ],
               "openingHours": "Mo-Su 00:00-23:59",
               "priceRange": "$$",
               "image": "https://westfordhomesinc.com/images/westford-homes-facility.jpg",
               "serviceArea": {
-                "@type": "City",
-                "name": "Wilsonville",
-                "addressRegion": "OR"
+                "@type": "GeoCircle",
+                "geoMidpoint": {
+                  "@type": "GeoCoordinates",
+                  "latitude": 45.3311,
+                  "longitude": -122.7644
+                },
+                "geoRadius": "50000"
               },
               "hasOfferCatalog": {
                 "@type": "OfferCatalog",
@@ -195,7 +227,6 @@ export default function ContactPage() {
           }}
         />
         
-        {/* Breadcrumb Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -220,7 +251,6 @@ export default function ContactPage() {
           }}
         />
         
-        {/* Contact Page Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -228,7 +258,7 @@ export default function ContactPage() {
               "@context": "https://schema.org",
               "@type": "ContactPage",
               "name": "Contact Westford Homes Adult Family Care",
-              "description": "Contact information and form for Westford Homes Adult Family Care in Wilsonville, Oregon",
+              "description": "Contact information and form for Westford Homes Adult Family Care in Wilsonville and Tualatin, Oregon",
               "url": "https://westfordhomesinc.com/contact",
               "mainEntity": {
                 "@type": "SeniorCare",
@@ -240,20 +270,17 @@ export default function ContactPage() {
           }}
         />
         
-        {/* Favicon and app icons */}
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
         
-        {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://www.google.com" />
         <link rel="preconnect" href="https://maps.googleapis.com" />
         
-        {/* Additional meta tags */}
         <meta name="theme-color" content="#2B5699" />
         <meta name="format-detection" content="telephone=yes" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -261,13 +288,11 @@ export default function ContactPage() {
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Westford Homes Contact" />
         
-        {/* Hreflang for international SEO if needed */}
         <link rel="alternate" hrefLang="x-default" href="https://westfordhomesinc.com/contact" />
       </Head>
 
       <Header />
 
-      {/* Floating Elements */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div 
           className="absolute w-4 h-4 bg-blue-200 rounded-full opacity-30 animate-pulse"
@@ -287,7 +312,6 @@ export default function ContactPage() {
         />
       </div>
 
-      {/* Hero Section with Gradient */}
       <section className="relative px-6 py-20 bg-gradient-to-br from-[#2B5699] via-blue-600 to-purple-700 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="max-w-6xl mx-auto text-center relative z-10">
@@ -301,7 +325,6 @@ export default function ContactPage() {
             Your loved one deserves exceptional care. {"We're here to answer every question and guide you through each step."}
           </p>
           
-          {/* Floating stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
             {stats.map((stat, index) => (
               <div 
@@ -317,11 +340,9 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Contact Form Section */}
       <section className="px-6 py-16 bg-gray-50 relative">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           
-          {/* Contact Info with Enhanced Design */}
           <div className="space-y-8">
             <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <h2 className="text-3xl font-bold mb-6 text-[#2B5699]">Get in Touch</h2>
@@ -335,8 +356,18 @@ export default function ContactPage() {
                     <FaMapMarkerAlt className="text-white text-lg" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-800">Address</p>
-                    <p className="text-gray-600">6770 SW Molalla Bend Road, Wilsonville OR 97070</p>
+                    <p className="font-semibold text-gray-800">Wilsonville Address</p>
+                    <p className="text-gray-600">6770 SW Molalla Bend Road, Wilsonville, OR 97070</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg hover:from-blue-100 hover:to-blue-200 transition-all duration-300">
+                  <div className="bg-blue-500 p-3 rounded-full">
+                    <FaMapMarkerAlt className="text-white text-lg" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-800">Tualatin Address</p>
+                    <p className="text-gray-600">3030 SW 66th Ave, Tualatin, OR 97062</p>
                   </div>
                 </div>
 
@@ -349,6 +380,16 @@ export default function ContactPage() {
                     <a href="tel:9788818055" className="text-gray-600 hover:text-green-600 transition-colors">
                       (978) 881-8055
                     </a>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-lg hover:from-indigo-100 hover:to-indigo-200 transition-all duration-300">
+                  <div className="bg-indigo-500 p-3 rounded-full">
+                    <FaFax className="text-white text-lg" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-800">Fax</p>
+                    <p className="text-gray-600">(503) 342-2212</p>
                   </div>
                 </div>
 
@@ -378,7 +419,6 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Testimonial Carousel */}
             <div className="bg-white p-8 rounded-2xl shadow-xl">
               <h3 className="text-2xl font-bold mb-6 text-[#2B5699]">What Families Say</h3>
               <div className="relative h-32 overflow-hidden">
@@ -420,7 +460,6 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Enhanced Contact Form */}
           <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300">
             {!isSubmitted ? (
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -428,6 +467,10 @@ export default function ContactPage() {
                   <h3 className="text-2xl font-bold text-[#2B5699] mb-2">Send a Message</h3>
                   <p className="text-gray-600">{"We'll get back to you within 24 hours"}</p>
                 </div>
+
+                {error && (
+                  <div className="text-red-600 text-center mb-4">{error}</div>
+                )}
 
                 <div className="relative">
                   <input
@@ -437,7 +480,8 @@ export default function ContactPage() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 peer"
+                    disabled={isLoading}
+                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 peer disabled:opacity-50"
                     placeholder=" "
                   />
                   <label
@@ -456,7 +500,8 @@ export default function ContactPage() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 peer"
+                    disabled={isLoading}
+                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 peer disabled:opacity-50"
                     placeholder=" "
                   />
                   <label
@@ -475,7 +520,8 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 peer resize-none"
+                    disabled={isLoading}
+                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 peer resize-none disabled:opacity-50"
                     placeholder=" "
                   />
                   <label
@@ -488,9 +534,10 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-[#2B5699] to-blue-600 text-white py-4 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-medium transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  disabled={isLoading}
+                  className={`w-full bg-gradient-to-r from-[#2B5699] to-blue-600 text-white py-4 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-medium transform hover:scale-105 shadow-lg hover:shadow-xl ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                  Send Message
+                  {isLoading ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             ) : (
@@ -506,37 +553,21 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Enhanced Location Section */}
-      <section className="px-6 py-16 bg-white">
+      <section className="px-6 py-16 bg-[#082125]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-[#2B5699] mb-6">Visit Our Beautiful Location</h2>
-            <p className="text-gray-700 max-w-3xl mx-auto text-lg leading-relaxed">
-              Westford Adult Family Home is located in the well-sorted Charbonneau District in Wilsonville Oregon. 
-              The AFH location has plenty of amenities, including a golf course, tennis court, multiple swimming pools, 
-              plenty of nature walk paths, and beautiful views.
+            <h2 className="text-4xl font-bold text-[#D2D0BB] mb-6">Visit Our Beautiful Locations</h2>
+            <p className="text-[#D2D0BB] max-w-3xl mx-auto text-lg leading-relaxed">
+              Westford Adult Family Home operates two locations in the Portland Metro Area, offering compassionate senior care in serene and accessible environments. Visit us in Wilsonville’s Charbonneau District or our new Tualatin location, both designed for comfort and accessibility.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 items-center mb-8">
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-lg">
-                <h3 className="font-bold text-blue-800 mb-2">🏌️ Golf Course Access</h3>
-                <p className="text-gray-700">Beautiful golf course views and access</p>
-              </div>
-              <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg">
-                <h3 className="font-bold text-green-800 mb-2">🏊 Swimming Pools</h3>
-                <p className="text-gray-700">Multiple swimming facilities nearby</p>
-              </div>
-              <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-lg">
-                <h3 className="font-bold text-purple-800 mb-2">🌲 Nature Walks</h3>
-                <p className="text-gray-700">Scenic walking paths through nature</p>
-              </div>
-            </div>
-
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
             <div className="rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition-all duration-300">
+              <h3 className="text-xl font-bold text-[#D2D0BB] p-4">Wilsonville Location</h3>
+              <p className="text-[#D2D0BB] px-4 pb-4">6770 SW Molalla Bend Road, Wilsonville, OR 97070</p>
               <iframe
-                title="Westford Homes Location"
+                title="Westford Homes Wilsonville Location"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2799.5!2d-122.7644!3d45.3311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54957b8b0f4c2c5b%3A0x8b96e6edb8f3e0b!2s6770%20SW%20Molalla%20Bend%20Rd%2C%20Wilsonville%2C%20OR%2097070!5e0!3m2!1sen!2sus!4v1689941123456!5m2!1sen!2sus"
                 width="100%"
                 height="400"
@@ -545,6 +576,62 @@ export default function ContactPage() {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
+            </div>
+            <div className="rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition-all duration-300">
+              <h3 className="text-xl font-bold text-[#D2D0BB] p-4">Tualatin Location</h3>
+              <p className="text-[#D2D0BB] px-4 pb-4">3030 SW 66th Ave, Tualatin, OR 97062</p>
+              <iframe
+                title="Westford Homes Tualatin Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2801.4!2d-122.7467!3d45.3768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54950a3b7f4c2c5b%3A0x8b96e6edb8f3e0b!2s3030%20SW%2066th%20Ave%2C%20Tualatin%2C%20OR%2097062!5e0!3m2!1sen!2sus!4v1698765432109!5m2!1sen!2sus"
+                width="100%"
+                height="400"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-2xl font-bold text-[#2B5699] text-center">Our Amenities</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-lg">
+                <h4 className="font-bold text-blue-800 mb-2">🏌️ Golf Course Access</h4>
+                <p className="text-gray-700">Beautiful golf course views and access</p>
+              </div>
+              <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg">
+                <h4 className="font-bold text-green-800 mb-2">🏊 Swimming Pools</h4>
+                <p className="text-gray-700">Multiple swimming facilities nearby</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-lg">
+                <h4 className="font-bold text-purple-800 mb-2">🌲 Nature Walks</h4>
+                <p className="text-gray-700">Scenic walking paths through nature</p>
+              </div>
+              <div className="bg-gradient-to-r from-orange-50 to-orange-100 p-6 rounded-lg">
+                <h4 className="font-bold text-orange-800 mb-2">🛏️ Private Bedrooms</h4>
+                <p className="text-gray-700">Spacious, private rooms for resident comfort</p>
+              </div>
+              <div className="bg-gradient-to-r from-indigo-50 to-indigo-100 p-6 rounded-lg">
+                <h4 className="font-bold text-indigo-800 mb-2">👩‍⚕️ 24/7 Care Staff</h4>
+                <p className="text-gray-700">Dedicated caregivers available round-the-clock</p>
+              </div>
+              <div className="bg-gradient-to-r from-red-50 to-red-100 p-6 rounded-lg">
+                <h4 className="font-bold text-red-800 mb-2">🚿 Accessible Bathrooms</h4>
+                <p className="text-gray-700">Wheelchair-accessible bathrooms with roll-in showers</p>
+              </div>
+              <div className="bg-gradient-to-r from-teal-50 to-teal-100 p-6 rounded-lg">
+                <h4 className="font-bold text-teal-800 mb-2">🍽️ Community Dining</h4>
+                <p className="text-gray-700">Nutritious meals in a warm, social setting</p>
+              </div>
+              <div className="bg-gradient-to-r from-pink-50 to-pink-100 p-6 rounded-lg">
+                <h4 className="font-bold text-pink-800 mb-2">🐾 Pet-Friendly Environment</h4>
+                <p className="text-gray-700">Welcoming space for residents’ pets</p>
+              </div>
+              <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-6 rounded-lg">
+                <h4 className="font-bold text-yellow-800 mb-2">🎉 Daily Activities & Events</h4>
+                <p className="text-gray-700">Engaging activities and social events for residents</p>
+              </div>
             </div>
           </div>
         </div>

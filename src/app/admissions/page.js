@@ -145,22 +145,49 @@ export default function Admissions() {
                 <h3 className="font-semibold text-[#2B5699] mb-3">Quick Contact</h3>
                 <div className="space-y-2 text-gray-700">
                   <p><strong>Phone:</strong> (958) 881-8055</p>
+                  <p><strong>House Number:</strong> (971)335-0724</p>
+                  <p><strong>Fax:</strong> 5033422212</p>
                   <p><strong>Email:</strong> westfordhomesinc@gmail.com</p>
                   <p><strong>Hours:</strong> Mon-Fri 8AM-6PM, Sat 9AM-4PM</p>
                   <p><strong>Emergency:</strong> 24/7 support available</p>
                 </div>
               </div>
 
-              {/* Admission Requirements */}
-              <div className="mt-6 bg-green-50 p-6 rounded-lg border-l-4 border-green-500">
-                <h3 className="font-semibold text-green-700 mb-2">Required Documents</h3>
-                <ul className="text-sm text-gray-700 space-y-1">
-                  <li>• Medical records and current medications</li>
-                  <li>• Insurance information</li>
-                  <li>• Emergency contact details</li>
-                  <li>• Personal care preferences</li>
-                  <li>• Financial information (if applicable)</li>
-                </ul>
+              {/* Base Pay and Required Documents Grid */}
+              <div className="grid md:grid-cols-2 gap-4 mt-6">
+                {/* Base Pay Section */}
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-lg border-l-4 border-[#2B5699] shadow-md">
+                  <div className="flex items-center mb-3">
+                    <div className="bg-[#2B5699] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                      <span className="text-lg font-bold">$</span>
+                    </div>
+                    <h3 className="font-semibold text-[#2B5699] text-lg">Base Pay</h3>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-[#2B5699] mb-2">$4,500</div>
+                    <p className="text-sm text-gray-600">per month</p>
+                    <div className="mt-3 p-3 bg-white rounded-lg">
+                      <p className="text-xs text-gray-500">Base care package includes:</p>
+                      <ul className="text-xs text-gray-600 mt-1 space-y-1">
+                        <li>• 24/7 supervised care</li>
+                        <li>• Meals and medication management</li>
+                        <li>• Basic personal care assistance</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Required Documents */}
+                <div className="bg-green-50 p-6 rounded-lg border-l-4 border-green-500 shadow-md">
+                  <h3 className="font-semibold text-green-700 mb-2">Required Documents</h3>
+                  <ul className="text-sm text-gray-700 space-y-1">
+                    <li>• Medical records and current medications</li>
+                    <li>• Insurance information</li>
+                    <li>• Emergency contact details</li>
+                    <li>• Personal care preferences</li>
+                    <li>• Financial information (if applicable)</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

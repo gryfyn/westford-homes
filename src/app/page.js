@@ -5,14 +5,13 @@ import Header from '@/components/Header'
 import Image from 'next/image'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 export default function Home() {
   const [hoveredCard, setHoveredCard] = useState(null)
-  const [currentSlide, setCurrentSlide] = useState(0)
 
-  // Placeholder for carousel images - replace with your actual images and descriptions
-  const carouselImages = [
+  // Images for the grid (replacing carousel)
+  const gridImages = [
     {
       id: 1,
       src: "/assets/personal-bathtub.jpg",
@@ -22,7 +21,7 @@ export default function Home() {
     {
       id: 2,
       src: "/assets/peaceful-outdoor-space.jpg", 
-      alt: "Peaceful outdoorspace",
+      alt: "Peaceful Outdoor Space",
       description: "Peaceful Outdoor Space"
     },
     {
@@ -50,27 +49,6 @@ export default function Home() {
       description: "Community Meals"
     }
   ]
-
-  // Auto-rotate carousel every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % carouselImages.length)
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [carouselImages.length])
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % carouselImages.length)
-  }
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length)
-  }
-
-  const goToSlide = (index) => {
-    setCurrentSlide(index)
-  }
 
   const features = [
     {
@@ -154,7 +132,10 @@ export default function Home() {
           name="description"
           content="Westford Homes Inc - Licensed adult foster care home in Wilsonville, Oregon's Charbonneau District. Professional 24/7 skilled nursing, wheelchair accessible facility, specialized dementia & hospice care. Affordable alternative to nursing homes."
         />
-        <meta name="keywords" content="Westford Homes Inc, adult foster care, Wilsonville Oregon, senior care services, assisted living alternative, dementia care specialists, hospice care, wheelchair accessible facility, 24/7 nursing care, Clackamas County, Charbonneau District, nursing home alternative, elderly care, memory care, respite care, long-term care, skilled nursing facility" />
+        <meta
+          name="keywords"
+          content="adult foster care Wilsonville Oregon, senior care Wilsonville, dementia care Wilsonville, hospice care Wilsonville, wheelchair accessible senior care, 24/7 skilled nursing Wilsonville, nursing home alternative Wilsonville, adult family home Wilsonville, senior care, a place for mom and Dad, adult foster home Oregon, senior care services Clackamas County, memory care Wilsonville, respite care Oregon, long-term care Wilsonville, elderly care Portland Metro, adult family home, elder care Washington, trusted senior care, warm senior home, loving elder care, peaceful caregiving, private care home, small assisted living, compassionate caregivers, licensed adult foster care in Wilsonville Oregon, affordable dementia care in Clackamas County, wheelchair accessible adult foster home, hospice care services in Wilsonville, senior care for end-of-life in Oregon, adult foster care Charbonneau District, 24/7 nursing care for seniors Wilsonville, personalized senior care Wilsonville, family-style care home Wilsonville, senior housing Snohomish, caregiving with dignity Wilsonville, safe senior living Wilsonville, residential care Washington, serene senior environment Wilsonville, dementia care Snohomish, home with heart Wilsonville"
+        />
         <meta name="author" content="Westford Homes Inc" />
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -212,7 +193,7 @@ export default function Home() {
         <meta name="business:contact_data:country_name" content="United States" />
         <meta name="business:contact_data:phone_number" content="+1-503-XXX-XXXX" />
 
-        {/* Alternate Language Links (if applicable) */}
+        {/* Alternate Language Links */}
         <link rel="alternate" hrefLang="en-US" href="https://westfordhomesinc.com/" />
         <link rel="alternate" hrefLang="x-default" href="https://westfordhomesinc.com/" />
 
@@ -229,8 +210,51 @@ export default function Home() {
               "@type": "NursingHome",
               "name": "Westford Homes Inc",
               "alternateName": "Westford Homes",
-              "description": "Licensed adult foster care home in Wilsonville, Oregon providing comprehensive 24/7 skilled nursing care, wheelchair accessible facilities, specialized dementia and hospice care services. Professional alternative to traditional nursing homes.",
+              "description": "Licensed adult foster care home in Wilsonville, Oregon providing comprehensive 24/7 skilled nursing care, wheelchair accessible facilities, specialized dementia and hospice care services. Affordable alternative to nursing homes.",
               "url": "https://westfordhomesinc.com",
+              "keywords": [
+                "adult foster care Wilsonville Oregon",
+                "senior care Wilsonville",
+                "dementia care Wilsonville",
+                "hospice care Wilsonville",
+                "wheelchair accessible senior care",
+                "24/7 skilled nursing Wilsonville",
+                "nursing home alternative Wilsonville",
+                "adult family home Wilsonville",
+                "senior care",
+                "a place for mom and Dad",
+                "adult foster home Oregon",
+                "senior care services Clackamas County",
+                "memory care Wilsonville",
+                "respite care Oregon",
+                "long-term care Wilsonville",
+                "elderly care Portland Metro",
+                "adult family home",
+                "elder care Washington",
+                "trusted senior care",
+                "warm senior home",
+                "loving elder care",
+                "peaceful caregiving",
+                "private care home",
+                "small assisted living",
+                "compassionate caregivers",
+                "licensed adult foster care in Wilsonville Oregon",
+                "affordable dementia care in Clackamas County",
+                "wheelchair accessible adult foster home",
+                "hospice care services in Wilsonville",
+                "senior care for end-of-life in Oregon",
+                "adult foster care Charbonneau District",
+                "24/7 nursing care for seniors Wilsonville",
+                "personalized senior care Wilsonville",
+                "family-style care home Wilsonville",
+                "senior housing Snohomish",
+                "caregiving with dignity Wilsonville",
+                "safe senior living Wilsonville",
+                "residential care Washington",
+                "serene senior environment Wilsonville",
+                "dementia care Snohomish",
+                "home with heart Wilsonville"
+              ],
               "logo": {
                 "@type": "ImageObject",
                 "url": "https://westfordhomesinc.com/westford-logo.PNG",
@@ -337,7 +361,7 @@ export default function Home() {
                     "itemOffered": {
                       "@type": "Service",
                       "name": "Wheelchair Accessible Facilities",
-                      "description": "Fully wheelchair accessible facility with wide hallways and roll-in showers",
+                      "description": "Fully wheelchair accessible facility with wide halls and roll-in showers",
                       "provider": {
                         "@type": "Organization",
                         "name": "Westford Homes Inc"
@@ -413,14 +437,47 @@ export default function Home() {
                 }
               ],
               "knowsAbout": [
-                "Adult Foster Care",
-                "Senior Care",
-                "Dementia Care",
-                "Hospice Care",
-                "Skilled Nursing",
-                "Wheelchair Accessibility",
-                "Memory Care",
-                "End-of-Life Care"
+                "adult foster care Wilsonville Oregon",
+                "senior care Wilsonville",
+                "dementia care Wilsonville",
+                "hospice care Wilsonville",
+                "wheelchair accessible senior care",
+                "24/7 skilled nursing Wilsonville",
+                "nursing home alternative Wilsonville",
+                "adult family home Wilsonville",
+                "senior care",
+                "a place for mom and Dad",
+                "adult foster home Oregon",
+                "senior care services Clackamas County",
+                "memory care Wilsonville",
+                "respite care Oregon",
+                "long-term care Wilsonville",
+                "elderly care Portland Metro",
+                "adult family home",
+                "elder care Washington",
+                "trusted senior care",
+                "warm senior home",
+                "loving elder care",
+                "peaceful caregiving",
+                "private care home",
+                "small assisted living",
+                "compassionate caregivers",
+                "licensed adult foster care in Wilsonville Oregon",
+                "affordable dementia care in Clackamas County",
+                "wheelchair accessible adult foster home",
+                "hospice care services in Wilsonville",
+                "senior care for end-of-life in Oregon",
+                "adult foster care Charbonneau District",
+                "24/7 nursing care for seniors Wilsonville",
+                "personalized senior care Wilsonville",
+                "family-style care home Wilsonville",
+                "senior housing Snohomish",
+                "caregiving with dignity Wilsonville",
+                "safe senior living Wilsonville",
+                "residential care Washington",
+                "serene senior environment Wilsonville",
+                "dementia care Snohomish",
+                "home with heart Wilsonville"
               ],
               "sameAs": [
                 "https://www.facebook.com/WestfordHomesInc",
@@ -440,26 +497,34 @@ export default function Home() {
               "mainEntity": [
                 {
                   "@type": "Question",
-                  "name": "What is adult foster care?",
+                  "name": "What is adult foster care in Wilsonville Oregon?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Adult foster care is a residential care option that provides personalized care and support services to elderly or disabled adults in a home-like environment. It's an alternative to nursing homes and assisted living facilities."
+                    "text": "Adult foster care at Westford Homes Inc in Wilsonville, Oregon, is a residential care option providing personalized senior care services, including 24/7 skilled nursing, dementia care, and hospice care, in a wheelchair-accessible, family-style care home."
                   }
                 },
                 {
                   "@type": "Question",
-                  "name": "Is Westford Homes Inc wheelchair accessible?",
+                  "name": "Is Westford Homes Inc a wheelchair accessible adult family home?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes, Westford Homes Inc is fully wheelchair accessible with wide hallways, roll-in showers, and wheelchair-accessible outdoor spaces."
+                    "text": "Yes, Westford Homes Inc is a fully wheelchair accessible adult family home in Wilsonville, Oregon, with wide hallways, roll-in showers, and accessible outdoor spaces for safe senior living."
                   }
                 },
                 {
                   "@type": "Question",
-                  "name": "What types of care do you provide?",
+                  "name": "What types of senior care services are offered at Westford Homes Inc?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "We provide comprehensive care from light assistance to end-of-life care, including 24/7 skilled nursing, dementia care, hospice care, and personal care services."
+                    "text": "Westford Homes Inc in Wilsonville, Oregon, offers comprehensive senior care services, including 24/7 skilled nursing, dementia care, hospice care, and personalized caregiving with dignity in a warm, home-like environment."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Why choose Westford Homes Inc as a place for mom and Dad?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Westford Homes Inc is a trusted senior care home in Wilsonville, Oregon, offering compassionate caregivers, a serene senior environment, and personalized care, making it an ideal alternative to nursing homes for your loved ones."
                   }
                 }
               ]
@@ -477,10 +542,9 @@ export default function Home() {
         <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
       </Head>
 
-
       <Header />
 
-      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <main className="min-h-screen bg-[#082125]">
         {/* Hero Section */}
         <section className="relative text-white py-12 sm:py-20 lg:py-24 px-4 overflow-hidden min-h-[70vh] sm:min-h-[80vh] flex items-center">
           {/* Background Image */}
@@ -549,7 +613,7 @@ export default function Home() {
         <section className="py-12 sm:py-16 lg:py-20 px-4">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 sm:mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6" style={{ color: '#D2D0BB' }}>
                 Caring for Local Seniors
               </h2>
               <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6 sm:mb-8"></div>
@@ -641,78 +705,42 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Image Carousel Section */}
-        <section className="py-12 sm:py-16 lg:py-20 px-4 bg-gradient-to-br from-gray-50 to-gray-100">
+        {/* Image Grid Section */}
+        <section className="py-12 sm:py-16 lg:py-20 px-4" style={{ backgroundColor: '#082125' }}>
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 sm:mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6" style={{ color: '#D2D0BB' }}>
                 See Our Facilities
               </h2>
               <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6 sm:mb-8"></div>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4 sm:px-0">
+              <p className="text-lg sm:text-xl max-w-3xl mx-auto px-4 sm:px-0" style={{ color: '#D2D0BB' }}>
                 Take a visual tour of our comfortable and accessible facilities
               </p>
             </div>
 
-            {/* Carousel Component */}
-            <div className="relative">
-              <div className="overflow-hidden rounded-2xl shadow-2xl">
-                <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-                  {carouselImages.map((image, index) => (
-                    <div key={image.id} className="w-full flex-shrink-0 relative">
-                      <Image
-                        src={image.src}
-                        alt={image.alt}
-                        width={1200}
-                        height={500}
-                        className="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                      <div className="absolute bottom-6 left-6 right-6">
-                        <h3 className="text-white text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
-                          {image.description}
-                        </h3>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Navigation Arrows */}
-              <button
-                onClick={prevSlide}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                onClick={nextSlide}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-
-              {/* Dots Indicator */}
-              <div className="flex justify-center mt-6 space-x-2">
-                {carouselImages.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => goToSlide(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentSlide ? 'bg-blue-500' : 'bg-gray-300 hover:bg-gray-400'
-                    }`}
+            {/* 3x2 Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {gridImages.map((image, index) => (
+                <div key={image.id} className="relative rounded-2xl shadow-2xl overflow-hidden">
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    width={400}
+                    height={300}
+                    className="w-full h-[200px] sm:h-[250px] lg:h-[300px] object-cover"
                   />
-                ))}
-              </div>
+                  <div className="p-4 text-center" style={{ backgroundColor: '#082125', color: '#D2D0BB' }}>
+                    <h3 className="text-lg sm:text-xl font-bold">
+                      {image.description}
+                    </h3>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Activities Section - Made fully mobile responsive */}
+        {/* Activities Section */}
         <section className="py-12 sm:py-16 lg:py-20 px-4 bg-gradient-to-br from-blue-50 to-indigo-50">
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
@@ -753,14 +781,14 @@ export default function Home() {
         </section>
 
         {/* Testimonials Section */}
-        <section className="py-12 sm:py-16 lg:py-20 px-4 bg-white">
+        <section className="py-12 sm:py-16 lg:py-20 px-4" style={{ backgroundColor: '#082125' }}>
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 sm:mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6" style={{ color: '#D2D0BB' }}>
                 What Families Say
               </h2>
               <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6 sm:mb-8"></div>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4 sm:px-0">
+              <p className="text-lg sm:text-xl max-w-3xl mx-auto px-4 sm:px-0" style={{ color: '#D2D0BB' }}>
                 Real stories from families who trust us with their loved ones
               </p>
             </div>
@@ -769,24 +797,32 @@ export default function Home() {
               {testimonials.map((testimonial, index) => (
                 <div
                   key={testimonial.id}
-                  className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border-t-4 border-blue-500 transition-all duration-300 transform hover:scale-105 hover:shadow-xl animate-fade-in-up"
+                  className="relative bg-white/10 backdrop-blur-md p-6 sm:p-8 rounded-2xl shadow-xl border border-blue-500/30 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl animate-fade-in-up"
                   style={{
-                    animationDelay: `${index * 100}ms`
+                    animationDelay: `${index * 100}ms`,
+                    color: '#D2D0BB'
                   }}
                 >
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-700 rounded-t-2xl"></div>
                   <div className="flex items-center mb-4">
                     {renderStars(testimonial.rating)}
                   </div>
-                  <h3 className="font-bold text-gray-800 mb-3 text-base sm:text-lg">
+                  <h3 className="font-bold text-lg sm:text-xl mb-3" style={{ color: '#D2D0BB' }}>
                     {testimonial.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed mb-6 text-sm sm:text-base">
+                  <p className="leading-relaxed mb-6 text-sm sm:text-base" style={{ color: '#D2D0BB' }}>
                     "{testimonial.text}"
                   </p>
-                  <div className="border-t pt-4">
-                    <p className="font-semibold text-gray-800 text-sm sm:text-base">{testimonial.name}</p>
-                    <p className="text-xs sm:text-sm text-gray-500">{testimonial.relation}</p>
-                    <p className="text-xs sm:text-sm text-gray-400">{testimonial.date}</p>
+                  <div className="border-t border-blue-500/20 pt-4">
+                    <p className="font-semibold text-sm sm:text-base" style={{ color: '#D2D0BB' }}>
+                      {testimonial.name}
+                    </p>
+                    <p className="text-xs sm:text-sm opacity-80" style={{ color: '#D2D0BB' }}>
+                      {testimonial.relation}
+                    </p>
+                    <p className="text-xs sm:text-sm opacity-60" style={{ color: '#D2D0BB' }}>
+                      {testimonial.date}
+                    </p>
                   </div>
                 </div>
               ))}
