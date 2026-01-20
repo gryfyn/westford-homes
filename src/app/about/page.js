@@ -5,10 +5,32 @@ import Header from '@/components/Header'
 import Image from 'next/image'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function About() {
   const [hoveredCard, setHoveredCard] = useState(null)
+  
+  // Animation states
+  const [heroVisible, setHeroVisible] = useState(false)
+  const [leftCardVisible, setLeftCardVisible] = useState(false)
+  const [centerCardVisible, setCenterCardVisible] = useState(false)
+  const [rightCardVisible, setRightCardVisible] = useState(false)
+  const [leadershipTextVisible, setLeadershipTextVisible] = useState(false)
+  const [leadershipImageVisible, setLeadershipImageVisible] = useState(false)
+  const [statisticsTitleVisible, setStatisticsTitleVisible] = useState(false)
+  const [statisticsVisible, setStatisticsVisible] = useState([])
+  const [blogVisible, setBlogVisible] = useState(false)
+
+  // Refs
+  const heroRef = useRef(null)
+  const leftCardRef = useRef(null)
+  const centerCardRef = useRef(null)
+  const rightCardRef = useRef(null)
+  const leadershipTextRef = useRef(null)
+  const leadershipImageRef = useRef(null)
+  const statisticsTitleRef = useRef(null)
+  const statisticsRefs = useRef([])
+  const blogRef = useRef(null)
 
   const statistics = [
     {
@@ -54,6 +76,122 @@ export default function About() {
       bgColor: "bg-orange-50"
     }
   ]
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '0px'
+    }
+
+    // Hero observer
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setHeroVisible(true)
+        }
+      })
+    }, observerOptions)
+
+    // Cards observers
+    const leftCardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setLeftCardVisible(true)
+        }
+      })
+    }, observerOptions)
+
+    const centerCardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setCenterCardVisible(true)
+        }
+      })
+    }, observerOptions)
+
+    const rightCardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setRightCardVisible(true)
+        }
+      })
+    }, observerOptions)
+
+    // Leadership section observers
+    const leadershipTextObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setLeadershipTextVisible(true)
+        }
+      })
+    }, observerOptions)
+
+    const leadershipImageObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setLeadershipImageVisible(true)
+        }
+      })
+    }, observerOptions)
+
+    // Statistics observers
+    const statisticsTitleObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setStatisticsTitleVisible(true)
+        }
+      })
+    }, observerOptions)
+
+    const statisticsObservers = statisticsRefs.current.map((ref, index) => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setStatisticsVisible(prev => {
+              const newState = [...prev]
+              newState[index] = true
+              return newState
+            })
+          }
+        })
+      }, observerOptions)
+      
+      if (ref) observer.observe(ref)
+      return observer
+    })
+
+    // Blog observer
+    const blogObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setBlogVisible(true)
+        }
+      })
+    }, observerOptions)
+
+    // Observe all elements
+    if (heroRef.current) heroObserver.observe(heroRef.current)
+    if (leftCardRef.current) leftCardObserver.observe(leftCardRef.current)
+    if (centerCardRef.current) centerCardObserver.observe(centerCardRef.current)
+    if (rightCardRef.current) rightCardObserver.observe(rightCardRef.current)
+    if (leadershipTextRef.current) leadershipTextObserver.observe(leadershipTextRef.current)
+    if (leadershipImageRef.current) leadershipImageObserver.observe(leadershipImageRef.current)
+    if (statisticsTitleRef.current) statisticsTitleObserver.observe(statisticsTitleRef.current)
+    if (blogRef.current) blogObserver.observe(blogRef.current)
+
+    // Cleanup
+    return () => {
+      if (heroRef.current) heroObserver.unobserve(heroRef.current)
+      if (leftCardRef.current) leftCardObserver.unobserve(leftCardRef.current)
+      if (centerCardRef.current) centerCardObserver.unobserve(centerCardRef.current)
+      if (rightCardRef.current) rightCardObserver.unobserve(rightCardRef.current)
+      if (leadershipTextRef.current) leadershipTextObserver.unobserve(leadershipTextRef.current)
+      if (leadershipImageRef.current) leadershipImageObserver.unobserve(leadershipImageRef.current)
+      if (statisticsTitleRef.current) statisticsTitleObserver.unobserve(statisticsTitleRef.current)
+      if (blogRef.current) blogObserver.unobserve(blogRef.current)
+      statisticsObservers.forEach(observer => observer.disconnect())
+    }
+  }, [])
 
   return (
     <>
@@ -172,153 +310,193 @@ export default function About() {
       <Header />
 
       <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 px-4">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <div className="relative max-w-6xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-6">
-              About Westford Homes
-            </h1>
-            <div className="w-24 h-1 bg-white mx-auto mb-8"></div>
-            <p className="text-xl sm:text-2xl font-light max-w-3xl mx-auto leading-relaxed">
-              Compassionate senior care with the warmth of home
-            </p>
+        {/* Who We Are Section */}
+        <section className="py-16 sm:py-20 lg:py-0 px-0 bg-gradient-to-b from-gray-50 to-white">
+          <div className="max-w-7xl mx-0 text-center">
+            {/* Hero Section */}
+            <div className="mb-12 sm:mb-16 relative min-h-[400px] flex items-center justify-center">
+              {/* Fixed Background Image */}
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style={{
+                  backgroundImage: "url('/assets/image2.jpg')",
+                  backgroundAttachment: 'fixed',
+                }}
+              >
+                <div className="absolute inset-0 bg-black/50"></div>
+              </div>
+
+              {/* Content - Slides up from bottom */}
+              <div 
+                ref={heroRef}
+                className={`relative z-10 text-center px-4 sm:px-8 max-w-4xl lg:h-[500px] py-25 transition-all duration-1000 ease-out ${
+                  heroVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-16'
+                }`}
+              >
+                <span className="text-purple-500 text-4xl font-bold tracking-wide uppercase">
+                  WHO WE ARE
+                </span>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-4 mb-6 text-white drop-shadow-lg">
+                  More Than Care, It's Community
+                </h2>
+                <p className="text-lg sm:text-xl text-gray-200 leading-relaxed drop-shadow-md">
+                  At Westford Homes, we believe that an adult family home should be exactly that—a home. We provide a supportive environment where residents are empowered to live fully, surrounded by compassionate caregivers and a vibrant community of peers. Our institution is dedicated to the highest standards of safety, dignity, and personal well-being.
+                </p>
+              </div>
+            </div>
+
+            {/* Three Cards */}
+            <div className="grid md:grid-cols-3 gap-8 lg:gap-12 px-4">
+              {/* Card 1 - Slides from left */}
+              <div 
+                ref={leftCardRef}
+                className={`bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-700 ease-out ${
+                  leftCardVisible 
+                    ? 'opacity-100 translate-x-0' 
+                    : 'opacity-0 -translate-x-16'
+                }`}
+              >
+                <div className="w-16 h-16 mx-auto mb-6 bg-purple-100 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.536-4.464a1 1 0 10-1.414-1.414A6 6 0 1110 4a1 1 0 000 2 4 4 0 100 8 1 1 0 000-2z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold mb-4" style={{ color: '#D2D0BB' }}>
+                  Our Mission
+                </h3>
+                <p className="text-gray-700 text-base leading-relaxed">
+                  To deliver exceptional, personalized care that honors the unique life story and medical needs of every resident in our care.
+                </p>
+              </div>
+
+              {/* Card 2 - Slides from bottom */}
+              <div 
+                ref={centerCardRef}
+                className={`bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-700 ease-out delay-150 ${
+                  centerCardVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-16'
+                }`}
+              >
+                <div className="w-16 h-16 mx-auto mb-6 bg-purple-100 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.414-1.414 3 3 0 01-4.242 0 1 1 0 00-1.414 1.414 5 5 0 007.072 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold mb-4" style={{ color: '#D2D0BB' }}>
+                  Our Values
+                </h3>
+                <p className="text-gray-700 text-base leading-relaxed">
+                  Integrity, respect, and clinical excellence guide every interaction, ensuring family-like care and personal dignity.
+                </p>
+              </div>
+
+              {/* Card 3 - Slides from right */}
+              <div 
+                ref={rightCardRef}
+                className={`bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-700 ease-out delay-300 ${
+                  rightCardVisible 
+                    ? 'opacity-100 translate-x-0' 
+                    : 'opacity-0 translate-x-16'
+                }`}
+              >
+                <div className="w-16 h-16 mx-auto mb-6 bg-purple-100 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13.5a.5.5 0 01.5.5v5.5H14a.5.5 0 010 1h-4a.5.5 0 01-.5-.5V5a.5.5 0 01.5-.5z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold mb-4" style={{ color: '#D2D0BB' }}>
+                  Our Environment
+                </h3>
+                <p className="text-gray-700 text-base leading-relaxed">
+                  A safe, comfortable, and accessible setting designed to promote independence and well-being for every resident.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 py-16">
-          {/* Joe's Story Section */}
-          <section className="mb-20">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Left Column - Text */}
-              <div className="space-y-8">
-                {/* Highlight Box */}
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-8 rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-300">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
-                      <span className="text-2xl">👨‍⚕️</span>
-                    </div>
-                    <h2 className="text-2xl font-bold">Meet Joe Kiere, RN</h2>
-                  </div>
-                  <p className="text-lg leading-relaxed">
-                    After 15 years of working with seniors in various healthcare settings, I opened Westford Homes AFH.
-                  </p>
-                </div>
-
-                {/* Bio Text */}
-                <div className="bg-white p-8 rounded-2xl shadow-lg space-y-6">
+        {/* Leadership Section */}
+        <section className="py-16 sm:py-20 lg:py-24 px-4 bg-gradient-to-b from-gray-50 to-white">
+          <div className="max-w-7xl mx-auto lg:px-22">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              {/* Left: Text Content - Slides from left */}
+              <div 
+                ref={leadershipTextRef}
+                className={`space-y-8 lg:w-[600px] transition-all duration-1000 ease-out ${
+                  leadershipTextVisible 
+                    ? 'opacity-100 translate-x-0' 
+                    : 'opacity-0 -translate-x-16'
+                }`}
+              >
+                <div className="p-8 rounded-2xl space-y-6">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4" style={{ color: '#D2D0BB' }}>
+                    LEADERSHIP & STANDARDS
+                  </h2>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-800">
+                    Built on Clinical Excellence
+                  </h3>
                   <p className="text-gray-700 text-lg leading-relaxed">
-                    Hi! I am <strong className="text-blue-600">Joe Kiere, RN</strong>, and I've worked as a Registered Nurse for over 15 years. I have broad and varied experience working with residents and families in geriatrics, psychiatry, and dementia.
+                    Westford Homes stands as a beacon of quality in the adult family home community. Our institution bridges the gap between sterile institutional care and the comfort of true home living, offering a sanctuary where medical needs are met with a personal touch.
                   </p>
                   <p className="text-gray-700 text-lg leading-relaxed">
-                    I also worked for 8 years in assisted living, adult family homes, and done hospice care work. I hold an Adult Foster Home license with a specialty designation in Mental Health and Dementia care.
+                    Founded by Joe Kiere, RN, our facility operates under a philosophy that every senior deserves dignity, respect, and professional medical attention. With over 15 years of nursing experience guiding our protocols, we ensure the highest standards of safety without sacrificing personal freedom.
                   </p>
-                  <p className="text-gray-700 text-lg leading-relaxed">
-                    It has been very fulfilling to provide quality services and support families who cannot care for their loved ones, whose caregivers are not able or available to provide full-time care, or desire a non-institutional alternative for their personal care.
+                  <p className="text-gray-700 text-lg leading-relaxed italic">
+                    "Westford Homes isn't just a facility; it's a community dedicated to the well-being of every resident."
                   </p>
-                </div>
-
-                {/* Credentials Box */}
-                <div className="bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500 p-6 rounded-xl">
-                  <h3 className="text-lg font-semibold text-green-800 mb-3">Licensed & Specialized</h3>
-                  <ul className="text-green-700 space-y-2">
-                    <li className="flex items-center">
-                      <span className="text-green-600 mr-2">✓</span>
-                      Registered Nurse (15+ years experience)
-                    </li>
-                    <li className="flex items-center">
-                      <span className="text-green-600 mr-2">✓</span>
-                      Adult Foster Home License
-                    </li>
-                    <li className="flex items-center">
-                      <span className="text-green-600 mr-2">✓</span>
-                      Mental Health Specialty Designation
-                    </li>
-                    <li className="flex items-center">
-                      <span className="text-green-600 mr-2">✓</span>
-                      Dementia Care Specialty Designation
-                    </li>
-                  </ul>
                 </div>
               </div>
 
-              {/* Right Column - Image */}
-              <div className="relative">
-                <div className="relative overflow-hidden rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300">
+              {/* Right: Image - Slides from right */}
+              <div 
+                ref={leadershipImageRef}
+                className={`relative transition-all duration-1000 ease-out delay-200 ${
+                  leadershipImageVisible 
+                    ? 'opacity-100 translate-x-0' 
+                    : 'opacity-0 translate-x-16'
+                }`}
+              >
+                <div className="relative overflow-hidden rounded-2xl lg:w-[400px] mx-25">
                   <Image
-                    src="/assets/joe-kiere.jpg"
+                    src="/assets/joe.PNG"
                     alt="Joe Kiere, RN - Founder of Westford Homes"
-                    width={600}
-                    height={700}
-                    className="object-cover w-full h-[500px] md:h-[600px]"
+                    width={400}
+                    height={630}
+                    className="object-fit w-[400px] h-[630px]"
                     priority
-                    style={{
-                      objectFit: 'cover',
-                      objectPosition: 'center'
-                    }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                  
-                  {/* Caption overlay */}
-                  <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-sm rounded-lg p-4">
-                    <p className="text-gray-800 font-medium text-sm">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+
+                  {/* Bottom Badge */}
+                  <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-sm rounded-lg p-5 shadow-md">
+                    <p className="text-gray-800 font-bold text-base sm:text-lg">
                       Joe Kiere, RN - Founder & Licensed Provider
                     </p>
-                    <p className="text-gray-600 text-xs mt-1">
+                    <p className="text-gray-600 text-sm mt-1">
                       Specializing in Mental Health & Dementia Care
                     </p>
                   </div>
                 </div>
-                
-                {/* Decorative elements */}
-                <div className="absolute -top-6 -right-6 w-24 h-24 bg-blue-200 rounded-full opacity-30 pointer-events-none"></div>
-                <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-blue-300 rounded-full opacity-20 pointer-events-none"></div>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* Experience Timeline */}
+        {/* Statistics Section */}
+        <div className="max-w-7xl mx-auto px-4 py-16">
           <section className="mb-20">
-            <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">
-                  Experience & Background
-                </h2>
-                <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6"></div>
-              </div>
-              
-              <div className="grid md:grid-cols-3 gap-8">
-                <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl">
-                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-white text-2xl">🏥</span>
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Geriatrics & Psychiatry</h3>
-                  <p className="text-gray-600">15+ years of specialized nursing experience in geriatric and psychiatric care</p>
-                </div>
-                
-                <div className="text-center p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-xl">
-                  <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-white text-2xl">🏠</span>
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Adult Family Homes</h3>
-                  <p className="text-gray-600">8 years of hands-on experience in assisted living and adult family home settings</p>
-                </div>
-                
-                <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl">
-                  <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-white text-2xl">🤝</span>
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Hospice Care</h3>
-                  <p className="text-gray-600">Compassionate end-of-life care and support for families during difficult times</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Statistics Section */}
-          <section className="mb-20">
-            <div className="text-center mb-12">
+            {/* Title - Fades in and slides up */}
+            <div 
+              ref={statisticsTitleRef}
+              className={`text-center mb-12 transition-all duration-1000 ease-out ${
+                statisticsTitleVisible 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-8'
+              }`}
+            >
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">
                 Why Adult Family Homes Matter
               </h2>
@@ -328,18 +506,24 @@ export default function About() {
               </p>
             </div>
 
+            {/* Statistics Cards - Staggered fade in */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {statistics.map((stat, index) => (
                 <div
                   key={stat.id}
-                  className={`bg-white p-6 rounded-2xl shadow-lg border-l-4 ${stat.color} transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${
+                  ref={el => statisticsRefs.current[index] = el}
+                  className={`bg-white p-6 rounded-2xl shadow-lg border-l-4 ${stat.color} transition-all duration-700 ease-out hover:scale-105 hover:shadow-xl ${
                     hoveredCard === stat.id ? stat.bgColor : ''
+                  } ${
+                    statisticsVisible[index]
+                      ? 'opacity-100 translate-y-0'
+                      : 'opacity-0 translate-y-8'
                   }`}
+                  style={{
+                    transitionDelay: `${index * 100}ms`
+                  }}
                   onMouseEnter={() => setHoveredCard(stat.id)}
                   onMouseLeave={() => setHoveredCard(null)}
-                  style={{
-                    animationDelay: `${index * 100}ms`
-                  }}
                 >
                   <h3 className="font-bold text-gray-800 mb-3 text-lg leading-tight">
                     {stat.title}
@@ -362,8 +546,15 @@ export default function About() {
             </div>
           </section>
 
-          {/* Blog Section */}
-          <section className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+          {/* Blog Section - Fades in and scales up */}
+          <section 
+            ref={blogRef}
+            className={`bg-white rounded-2xl shadow-xl p-8 md:p-12 transition-all duration-1000 ease-out ${
+              blogVisible 
+                ? 'opacity-100 scale-100' 
+                : 'opacity-0 scale-95'
+            }`}
+          >
             <div className="text-center mb-8">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">
                 Joe's Blog: Thoughts on Senior Care

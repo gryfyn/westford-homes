@@ -14,21 +14,7 @@ export default function Footer() {
 
       {/* Main Footer Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-16 pb-8">
-        {/* Logo Section */}
-        <div className="text-center mb-12">
-          <div className="inline-block p-4">
-            <Image
-              src="/assets/westford-logo.PNG"
-              alt="Westford Homes Logo"
-              width={180}
-              height={80}
-              className="mx-auto"
-            />
-          </div>
-          <p className="mt-4 text-gray-300 text-lg max-w-2xl mx-auto">
-            Providing compassionate senior living with dignity, comfort, and exceptional care in the heart of Oregon.
-          </p>
-        </div>
+        
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">

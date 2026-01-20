@@ -1,9 +1,106 @@
+"use client"
+
 import Head from 'next/head'
 import Header from '@/components/Header'
 import Image from 'next/image'
 import Footer from '@/components/Footer'
+import { useState, useEffect, useRef } from 'react'
 
 export default function Admissions() {
+  // Animation states
+  const [heroVisible, setHeroVisible] = useState(false)
+  const [approachVisible, setApproachVisible] = useState(false)
+  const [approachCardsVisible, setApproachCardsVisible] = useState([])
+  const [processTitleVisible, setProcessTitleVisible] = useState(false)
+  const [processStepsVisible, setProcessStepsVisible] = useState([])
+  const [basePayVisible, setBasePayVisible] = useState(false)
+  const [documentsVisible, setDocumentsVisible] = useState(false)
+  const [testimonialVisible, setTestimonialVisible] = useState(false)
+  const [ctaVisible, setCtaVisible] = useState(false)
+
+  // Refs
+  const heroRef = useRef(null)
+  const approachRef = useRef(null)
+  const approachCardsRefs = useRef([])
+  const processTitleRef = useRef(null)
+  const processStepsRefs = useRef([])
+  const basePayRef = useRef(null)
+  const documentsRef = useRef(null)
+  const testimonialRef = useRef(null)
+  const ctaRef = useRef(null)
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '0px'
+    }
+
+    const createObserver = (setter) => new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setter(true)
+        }
+      })
+    }, observerOptions)
+
+    const heroObserver = createObserver(setHeroVisible)
+    const approachObserver = createObserver(setApproachVisible)
+    const processTitleObserver = createObserver(setProcessTitleVisible)
+    const basePayObserver = createObserver(setBasePayVisible)
+    const documentsObserver = createObserver(setDocumentsVisible)
+    const testimonialObserver = createObserver(setTestimonialVisible)
+    const ctaObserver = createObserver(setCtaVisible)
+
+    const approachCardsObservers = approachCardsRefs.current.map((ref, index) => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setApproachCardsVisible(prev => {
+              const newState = [...prev]
+              newState[index] = true
+              return newState
+            })
+          }
+        })
+      }, observerOptions)
+      
+      if (ref) observer.observe(ref)
+      return observer
+    })
+
+    const processStepsObservers = processStepsRefs.current.map((ref, index) => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setProcessStepsVisible(prev => {
+              const newState = [...prev]
+              newState[index] = true
+              return newState
+            })
+          }
+        })
+      }, observerOptions)
+      
+      if (ref) observer.observe(ref)
+      return observer
+    })
+
+    if (heroRef.current) heroObserver.observe(heroRef.current)
+    if (approachRef.current) approachObserver.observe(approachRef.current)
+    if (processTitleRef.current) processTitleObserver.observe(processTitleRef.current)
+    if (basePayRef.current) basePayObserver.observe(basePayRef.current)
+    if (documentsRef.current) documentsObserver.observe(documentsRef.current)
+    if (testimonialRef.current) testimonialObserver.observe(testimonialRef.current)
+    if (ctaRef.current) ctaObserver.observe(ctaRef.current)
+
+    return () => {
+      [heroObserver, approachObserver, processTitleObserver, basePayObserver, 
+       documentsObserver, testimonialObserver, ctaObserver].forEach(obs => obs.disconnect())
+      approachCardsObservers.forEach(observer => observer.disconnect())
+      processStepsObservers.forEach(observer => observer.disconnect())
+    }
+  }, [])
+
   return (
     <>
       <Head>
@@ -99,190 +196,224 @@ export default function Admissions() {
           />
         </Head>
 
+
       <Header />
 
-      <main className="min-h-screen bg-gray-50 px-4 py-16">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl font-bold text-[#2B5699] text-center mb-12">
-            Admissions
-          </h1>
+      <main className="min-h-screen bg-gray-50">
+        {/* Hero Section */}
+        <section className="relative h-[500px] overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: "url('/assets/image3.jpg')",
+              backgroundAttachment: 'fixed'
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-[#2b0f3a]/70 via-[#3a155c]/60 to-[#082125]/80"></div>
+          </div>
 
-          {/* Top Section: Image + Info */}
-          <div className="grid md:grid-cols-2 gap-10 items-start mb-16">
-            <div>
-              <Image
-                src="/assets/admissions.jpg"
-                alt="Elderly Care Admissions"
-                width={600}
-                height={200}
-                className="rounded-lg shadow-lg object-cover w-full h-48"
-              />
-              
-              {/* Additional Info Box */}
-              <div className="mt-6 bg-blue-50 p-6 rounded-lg border-l-4 border-[#2B5699]">
-                <h3 className="font-semibold text-[#2B5699] mb-2">What to Expect</h3>
-                <ul className="text-sm text-gray-700 space-y-1">
-                  <li>• Personalized care assessment</li>
-                  <li>• Comprehensive facility tour</li>
-                  <li>• Meet our caring staff</li>
-                  <li>• Review of services and amenities</li>
-                  <li>• Transparent pricing discussion</li>
-                </ul>
+          <div ref={heroRef} className={`relative z-10 h-full flex items-center justify-center px-4 transition-all duration-1200 ease-out ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+            <div className="text-center text-white max-w-4xl">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                Welcome to the Family.<br />
+                
+              </h1>
+              <p className="text-lg sm:text-xl mb-8 opacity-90">
+                We're here to guide you every step of the way, ensuring a smooth transition for your loved ones into a community that cares.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#process" className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+                  Schedule a Tour
+                </a>
+                <a href="#contact" className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-2 border-white px-8 py-4 rounded-full font-semibold transition-all duration-300">
+                  Contact Admissions
+                </a>
               </div>
             </div>
+          </div>
+        </section>
 
-            <div>
-              <p className="text-lg text-gray-700 leading-relaxed mb-4">
-                At Westford Homes, we understand that choosing a care home is a deeply personal and emotional decision. Our admissions process is designed to be simple, compassionate, and informative. We're here to support you every step of the way.
+        {/* Our Approach Section */}
+        <section className="py-16 sm:py-20 px-4 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <div ref={approachRef} className={`text-center mb-12 transition-all duration-1000 ease-out ${approachVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <p className="text-purple-600 font-semibold mb-2 uppercase tracking-wide text-sm">Our Approach</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">A Supportive Journey</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Our admissions process is designed to be stress-free and transparent, prioritizing the comfort of your family.
               </p>
+            </div>
 
-              <p className="text-lg text-gray-700 mb-6">
-                Whether you're in the early stages of considering care or ready to move forward, our team is available to answer all your questions and help you feel confident in your decision.
-              </p>
-
-              {/* Quick Contact Info */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="font-semibold text-[#2B5699] mb-3">Quick Contact</h3>
-                <div className="space-y-2 text-gray-700">
-                  <p><strong>Phone:</strong> (958) 881-8055</p>
-                  <p><strong>House Number:</strong> (971)335-0724</p>
-                  <p><strong>Fax:</strong> 5033422212</p>
-                  <p><strong>Email:</strong> westfordhomesinc@gmail.com</p>
-                  <p><strong>Hours:</strong> Mon-Fri 8AM-6PM, Sat 9AM-4PM</p>
-                  <p><strong>Emergency:</strong> 24/7 support available</p>
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                { icon: '💜', title: 'Compassionate Assessment', desc: 'We take the time to understand your loved one\'s unique needs, preferences, and life story.' },
+                { icon: '📋', title: 'Personalized Care Plans', desc: 'Every plan is crafted with care, tailored specifically to fit medical and social needs.' },
+                { icon: '🏡', title: 'Seamless Transition', desc: 'We handle the logistics to make move-in day a smooth celebration of a new chapter, not a move.' }
+              ].map((card, idx) => (
+                <div key={idx} ref={el => approachCardsRefs.current[idx] = el} className={`bg-gray-50 p-8 rounded-2xl text-center transition-all duration-700 ease-out hover:shadow-xl ${approachCardsVisible[idx] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{transitionDelay: `${idx * 150}ms`}}>
+                  <div className="text-5xl mb-4">{card.icon}</div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">{card.title}</h3>
+                  <p className="text-gray-600">{card.desc}</p>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Admissions Process */}
+        <section id="process" className="py-16 sm:py-20 px-4 bg-gray-50">
+          <div className="max-w-6xl mx-auto">
+            <div ref={processTitleRef} className={`text-center mb-12 transition-all duration-1000 ease-out ${processTitleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">Admissions Process</h2>
+              <p className="text-lg text-gray-600">Four simple steps to joining our community.</p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+              {[
+                { num: '01', title: 'Initial Inquiry & Tour', desc: 'Reach out to our admissions coordinator to schedule a comfortable facility tour and meet our team. We\'ll answer all your preliminary questions.' },
+                { num: '02', title: 'Assessment', desc: 'We conduct a thorough wellness assessment to determine the appropriate level of care required.' },
+                { num: '03', title: 'Review & Agreement', desc: 'Review care plans, pricing, medical records, then sign the residency agreement together.' },
+                { num: '04', title: 'Move-In Day', desc: 'Our team assists with setting a care-including tour logistics to their new home.' }
+              ].map((step, idx) => (
+                <div key={idx} ref={el => processStepsRefs.current[idx] = el} className={`bg-white p-6 rounded-2xl shadow-md transition-all duration-700 ease-out hover:shadow-xl ${processStepsVisible[idx] ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{transitionDelay: `${idx * 150}ms`}}>
+                  <div className="text-4xl font-bold text-purple-200 mb-3">{step.num}</div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">{step.title}</h3>
+                  <p className="text-gray-600 text-sm">{step.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <button className="bg-purple-600 hover:bg-purple-700 text-white px-10 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+                Start the Process
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Base Pay & Documents Section */}
+        <section className="py-16 sm:py-20 px-4 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Base Pay */}
+              <div ref={basePayRef} className={`bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl shadow-lg transition-all duration-1000 ease-out ${basePayVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
+                <h3 className="text-2xl font-bold text-purple-800 mb-6">Base Pay & Inclusions</h3>
+                <p className="text-gray-600 mb-6">Transparent pricing for peace of mind.</p>
+                
+                <div className="bg-white p-6 rounded-xl mb-6 text-center">
+                  <div className="text-5xl font-bold text-purple-600 mb-2">$4,500</div>
+                  <p className="text-gray-500">/month starting</p>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-gray-800 mb-3">What's Included:</h4>
+                  <div className="flex items-start space-x-3">
+                    <div className="text-green-500 mt-1">✓</div>
+                    <p className="text-gray-700">Private or semi-private furnished room</p>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="text-green-500 mt-1">✓</div>
+                    <p className="text-gray-700">Three nutritious meals & snacks daily</p>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="text-green-500 mt-1">✓</div>
+                    <p className="text-gray-700">Housekeeping and laundry services</p>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="text-green-500 mt-1">✓</div>
+                    <p className="text-gray-700">24/7 staff availability & emergency call system</p>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="text-green-500 mt-1">✓</div>
+                    <p className="text-gray-700">Daily social activities and events</p>
+                  </div>
+                </div>
+
+                <p className="text-xs text-gray-500 mt-6 italic">*Additional care levy (medication management, bathing assistance, etc.) assessed separately.</p>
               </div>
 
-              {/* Base Pay and Required Documents Grid */}
-              <div className="grid md:grid-cols-2 gap-4 mt-6">
-                {/* Base Pay Section */}
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-lg border-l-4 border-[#2B5699] shadow-md">
-                  <div className="flex items-center mb-3">
-                    <div className="bg-[#2B5699] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3">
-                      <span className="text-lg font-bold">$</span>
+              {/* Required Documents */}
+              <div ref={documentsRef} className={`bg-gray-50 p-8 rounded-2xl shadow-lg transition-all duration-1000 ease-out delay-200 ${documentsVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
+                <h3 className="text-2xl font-bold text-gray-800 mb-6">Required Documents</h3>
+                <p className="text-gray-600 mb-6">Please prepare these items for admission.</p>
+
+                <div className="space-y-4">
+                  {[
+                    { icon: '📋', title: 'Medical History & Physical', desc: 'Recent physical exam results' },
+                    { icon: '🧪', title: 'TB Test Results', desc: 'Current tuberculosis screening' },
+                    { icon: '⚖️', title: 'Power of Attorney (POA)', desc: 'Legal healthcare representative' },
+                    { icon: '💳', title: 'Insurance Cards', desc: 'Medicare, Medicaid, or private' }
+                  ].map((doc, idx) => (
+                    <div key={idx} className="bg-white p-4 rounded-xl flex items-start space-x-4 hover:shadow-md transition-shadow">
+                      <div className="text-3xl">{doc.icon}</div>
+                      <div>
+                        <h4 className="font-semibold text-gray-800">{doc.title}</h4>
+                        <p className="text-sm text-gray-600">{doc.desc}</p>
+                      </div>
                     </div>
-                    <h3 className="font-semibold text-[#2B5699] text-lg">Base Pay</h3>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-[#2B5699] mb-2">$4,500</div>
-                    <p className="text-sm text-gray-600">per month</p>
-                    <div className="mt-3 p-3 bg-white rounded-lg">
-                      <p className="text-xs text-gray-500">Base care package includes:</p>
-                      <ul className="text-xs text-gray-600 mt-1 space-y-1">
-                        <li>• 24/7 supervised care</li>
-                        <li>• Meals and medication management</li>
-                        <li>• Basic personal care assistance</li>
-                      </ul>
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
-                {/* Required Documents */}
-                <div className="bg-green-50 p-6 rounded-lg border-l-4 border-green-500 shadow-md">
-                  <h3 className="font-semibold text-green-700 mb-2">Required Documents</h3>
-                  <ul className="text-sm text-gray-700 space-y-1">
-                    <li>• Medical records and current medications</li>
-                    <li>• Insurance information</li>
-                    <li>• Emergency contact details</li>
-                    <li>• Personal care preferences</li>
-                    <li>• Financial information (if applicable)</li>
-                  </ul>
+                <div className="mt-6 bg-purple-100 p-4 rounded-xl">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <span className="text-purple-600">📥</span>
+                    <h4 className="font-semibold text-purple-800">Download Full Admissions Packet (PDF)</h4>
+                  </div>
+                  <button className="text-purple-600 hover:text-purple-700 font-semibold text-sm">
+                    Click to Download →
+                  </button>
                 </div>
               </div>
             </div>
           </div>
+        </section>
 
-          {/* Step-by-step Process */}
-          <div className="bg-white p-8 rounded-lg shadow-md">
-            <h2 className="text-3xl font-semibold text-[#2B5699] mb-6">Steps to Admission</h2>
-
-            <div className="space-y-4">
-              <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500 flex items-start">
-                <div className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-lg mr-4 mt-1 flex-shrink-0">
-                  1
+        {/* Testimonial */}
+        <section className="py-16 px-4 bg-gray-50">
+          <div className="max-w-4xl mx-auto">
+            <div ref={testimonialRef} className={`bg-white p-12 rounded-2xl shadow-xl text-center transition-all duration-1000 ease-out ${testimonialVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+              <div className="text-6xl text-purple-200 mb-6">"</div>
+              <p className="text-xl text-gray-700 mb-8 italic leading-relaxed">
+                "From the moment we walked in, we felt a sense of relief. The admissions team handled everything with such grace, making a difficult time so much easier for our family."
+              </p>
+              <div className="flex items-center justify-center space-x-4">
+                <div className="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center">
+                  <span className="text-2xl">👤</span>
                 </div>
-                <div>
-                  <h3 className="font-bold text-blue-700 mb-2 text-lg">Initial Contact</h3>
-                  <p className="text-gray-700">
-                    Call or email us to express interest and ask questions. We're here to listen and provide initial guidance.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-green-500 flex items-start">
-                <div className="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-lg mr-4 mt-1 flex-shrink-0">
-                  2
-                </div>
-                <div>
-                  <h3 className="font-bold text-green-700 mb-2 text-lg">Tour & Consultation</h3>
-                  <p className="text-gray-700">
-                    Schedule a tour of our home and meet with staff to assess your loved one's needs. See our facilities firsthand.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-purple-500 flex items-start">
-                <div className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-lg mr-4 mt-1 flex-shrink-0">
-                  3
-                </div>
-                <div>
-                  <h3 className="font-bold text-purple-700 mb-2 text-lg">Health Assessment</h3>
-                  <p className="text-gray-700">
-                    We review medical needs and ensure we can provide the best possible care tailored to your loved one's requirements.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-orange-500 flex items-start">
-                <div className="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-lg mr-4 mt-1 flex-shrink-0">
-                  4
-                </div>
-                <div>
-                  <h3 className="font-bold text-orange-700 mb-2 text-lg">Paperwork</h3>
-                  <p className="text-gray-700">
-                    Complete necessary forms including personal history and care needs. We'll guide you through each document.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-red-500 flex items-start">
-                <div className="bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-lg mr-4 mt-1 flex-shrink-0">
-                  5
-                </div>
-                <div>
-                  <h3 className="font-bold text-red-700 mb-2 text-lg">Move-In Planning</h3>
-                  <p className="text-gray-700">
-                    We work with you to set a move-in date, prepare the room, and make the transition smooth and comfortable.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 text-center">
-              <div className="bg-gray-100 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-[#2B5699] mb-3">Ready to Get Started?</h3>
-                <p className="text-gray-700 mb-4">
-                  Contact us today to begin the admissions process or schedule a tour.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a 
-                    href="tel:+1234567890" 
-                    className="bg-[#2B5699] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1e3d6f] transition-colors"
-                  >
-                    Call Us Today
-                  </a>
-                  <a 
-                    href="mailto:westfordhomesinc@gmail.com" 
-                    className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
-                  >
-                    Email Us
-                  </a>
+                <div className="text-left">
+                  <p className="font-semibold text-gray-800">Sarah Jenkins</p>
+                  <p className="text-sm text-gray-600">Daughter of Resident</p>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
+
+        {/* CTA Section */}
+        <section id="contact" className="py-20 px-4 bg-gradient-to-r from-purple-600 to-purple-800">
+          <div className="max-w-4xl mx-auto text-center">
+            <div ref={ctaRef} className={`transition-all duration-1000 ease-out ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+                Ready to take the next step?
+              </h2>
+              <p className="text-lg text-purple-100 mb-8">
+                Have questions? Our dedicated admissions specialty is standing by to help you navigate this important decision.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="tel:9588818055" className="bg-white text-purple-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2">
+                  <span>📞</span>
+                  <span>(958) 881-8055</span>
+                </a>
+                <a href="mailto:westfordhomesinc@gmail.com" className="bg-purple-700 text-white border-2 border-white px-8 py-4 rounded-full font-semibold hover:bg-purple-800 transition-all duration-300 flex items-center justify-center space-x-2">
+                  <span>✉️</span>
+                  <span>Email Admissions</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
+
       <Footer />
     </>
   )

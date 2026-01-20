@@ -1,60 +1,101 @@
 'use client'
+
 import Head from 'next/head'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaHeart, FaUsers, FaHome, FaClock, FaCheckCircle, FaFax } from 'react-icons/fa'
-import { useState, useEffect } from 'react'
+import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaCheckCircle, FaFax, FaClock } from 'react-icons/fa'
+import { useState, useEffect, useRef } from 'react'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     message: ''
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const [currentTestimonial, setCurrentTestimonial] = useState(0)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
-  const testimonials = [
-    {
-      text: "The care and compassion at Westford Homes is extraordinary. My mother feels truly at home here.",
-      author: "Sarah M.",
-      role: "Daughter of Resident"
-    },
-    {
-      text: "Joe and his team provide exceptional care. We couldn't be happier with our decision.",
-      author: "Michael K.",
-      role: "Family Member"
-    },
-    {
-      text: "The personal attention and medical expertise give us complete peace of mind.",
-      author: "Jennifer L.",
-      role: "Son of Resident"
-    }
-  ]
+  // Animation states
+  const [heroVisible, setHeroVisible] = useState(false)
+  const [contactCardsVisible, setContactCardsVisible] = useState([])
+  const [formVisible, setFormVisible] = useState(false)
+  const [quickInfoVisible, setQuickInfoVisible] = useState(false)
+  const [mapsVisible, setMapsVisible] = useState(false)
+  const [amenitiesVisible, setAmenitiesVisible] = useState([])
 
-  const stats = [
-    { icon: FaUsers, number: "15+", label: "Years Experience", color: "text-blue-500" },
-    { icon: FaHome, number: "24/7", label: "Care Available", color: "text-green-500" },
-    { icon: FaHeart, number: "100%", label: "Satisfaction Rate", color: "text-red-500" },
-    { icon: FaClock, number: "< 24hr", label: "Response Time", color: "text-purple-500" }
-  ]
+  // Refs
+  const heroRef = useRef(null)
+  const contactCardsRefs = useRef([])
+  const formRef = useRef(null)
+  const quickInfoRef = useRef(null)
+  const mapsRef = useRef(null)
+  const amenitiesRefs = useRef([])
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 4000)
-    return () => clearInterval(interval)
-  }, [testimonials.length])
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '0px'
     }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+
+    const createObserver = (setter) => new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setter(true)
+        }
+      })
+    }, observerOptions)
+
+    const heroObserver = createObserver(setHeroVisible)
+    const formObserver = createObserver(setFormVisible)
+    const quickInfoObserver = createObserver(setQuickInfoVisible)
+    const mapsObserver = createObserver(setMapsVisible)
+
+    const contactCardsObservers = contactCardsRefs.current.map((ref, index) => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setContactCardsVisible(prev => {
+              const newState = [...prev]
+              newState[index] = true
+              return newState
+            })
+          }
+        })
+      }, observerOptions)
+      
+      if (ref) observer.observe(ref)
+      return observer
+    })
+
+    const amenitiesObservers = amenitiesRefs.current.map((ref, index) => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setAmenitiesVisible(prev => {
+              const newState = [...prev]
+              newState[index] = true
+              return newState
+            })
+          }
+        })
+      }, observerOptions)
+      
+      if (ref) observer.observe(ref)
+      return observer
+    })
+
+    if (heroRef.current) heroObserver.observe(heroRef.current)
+    if (formRef.current) formObserver.observe(formRef.current)
+    if (quickInfoRef.current) quickInfoObserver.observe(quickInfoRef.current)
+    if (mapsRef.current) mapsObserver.observe(mapsRef.current)
+
+    return () => {
+      [heroObserver, formObserver, quickInfoObserver, mapsObserver].forEach(obs => obs.disconnect())
+      contactCardsObservers.forEach(observer => observer.disconnect())
+      amenitiesObservers.forEach(observer => observer.disconnect())
+    }
   }, [])
 
   const handleChange = (e) => {
@@ -62,7 +103,7 @@ export default function ContactPage() {
       ...formData,
       [e.target.name]: e.target.value
     })
-    setError('') // Clear error on input change
+    setError('')
   }
 
   const handleSubmit = async (e) => {
@@ -87,7 +128,7 @@ export default function ContactPage() {
       setIsSubmitted(true)
       setTimeout(() => {
         setIsSubmitted(false)
-        setFormData({ name: '', email: '', message: '' })
+        setFormData({ name: '', email: '', phone: '', message: '' })
       }, 3000)
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again or contact us directly.')
@@ -95,6 +136,18 @@ export default function ContactPage() {
       setIsLoading(false)
     }
   }
+
+  const amenities = [
+    { icon: '🏌️', title: 'Golf Course Access', desc: 'Beautiful golf course views and access', color: 'from-blue-50 to-blue-100', textColor: 'text-blue-800' },
+    { icon: '🏊', title: 'Swimming Pools', desc: 'Multiple swimming facilities nearby', color: 'from-cyan-50 to-cyan-100', textColor: 'text-cyan-800' },
+    { icon: '🌲', title: 'Nature Walks', desc: 'Scenic walking paths through nature', color: 'from-green-50 to-green-100', textColor: 'text-green-800' },
+    { icon: '🛏️', title: 'Private Bedrooms', desc: 'Spacious, private rooms for comfort', color: 'from-purple-50 to-purple-100', textColor: 'text-purple-800' },
+    { icon: '👩‍⚕️', title: '24/7 Care Staff', desc: 'Dedicated caregivers round-the-clock', color: 'from-pink-50 to-pink-100', textColor: 'text-pink-800' },
+    { icon: '🚿', title: 'Accessible Bathrooms', desc: 'Wheelchair-accessible with roll-in showers', color: 'from-indigo-50 to-indigo-100', textColor: 'text-indigo-800' },
+    { icon: '🍽️', title: 'Community Dining', desc: 'Nutritious meals in social setting', color: 'from-orange-50 to-orange-100', textColor: 'text-orange-800' },
+    { icon: '🐾', title: 'Pet-Friendly', desc: 'Welcoming space for residents\' pets', color: 'from-amber-50 to-amber-100', textColor: 'text-amber-800' },
+    { icon: '🎉', title: 'Daily Activities', desc: 'Engaging activities and social events', color: 'from-red-50 to-red-100', textColor: 'text-red-800' }
+  ]
 
   return (
     <>
@@ -293,349 +346,305 @@ export default function ContactPage() {
 
       <Header />
 
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div 
-          className="absolute w-4 h-4 bg-blue-200 rounded-full opacity-30 animate-pulse"
-          style={{ 
-            left: `${mousePosition.x * 0.1}px`, 
-            top: `${mousePosition.y * 0.1}px`,
-            transition: 'all 0.3s ease'
+      <main className="min-h-screen bg-gray-50">
+        {/* Hero Section */}
+        <section 
+          className="relative h-[600px] overflow-hidden bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/assets/image2.jpg')",
+            backgroundAttachment: 'fixed'
           }}
-        />
-        <div 
-          className="absolute w-6 h-6 bg-green-200 rounded-full opacity-20 animate-bounce"
-          style={{ 
-            left: `${mousePosition.x * 0.05}px`, 
-            top: `${mousePosition.y * 0.05}px`,
-            transition: 'all 0.5s ease'
-          }}
-        />
-      </div>
-
-      <section className="relative px-6 py-20 bg-gradient-to-br from-[#2B5699] via-blue-600 to-purple-700 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="max-w-6xl mx-auto text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 opacity-0 animate-[fadeIn_1s_ease-out_forwards]">
-            {"Let's Start a "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-              {" Conversation"}
-            </span>
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto">
-            Your loved one deserves exceptional care. {"We're here to answer every question and guide you through each step."}
-          </p>
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 via-purple-800/85 to-blue-900/90"></div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
-            {stats.map((stat, index) => (
-              <div 
-                key={index} 
-                className="bg-white/10 backdrop-blur-sm rounded-lg p-6 hover:bg-white/20 transition-all duration-300 hover:scale-105"
-              >
-                <stat.icon className={`text-3xl ${stat.color} mb-2 mx-auto`} />
-                <div className="text-2xl font-bold">{stat.number}</div>
-                <div className="text-sm opacity-80">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-6 py-16 bg-gray-50 relative">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          
-          <div className="space-y-8">
-            <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <h2 className="text-3xl font-bold mb-6 text-[#2B5699]">Get in Touch</h2>
-              <p className="mb-8 text-gray-700 text-lg leading-relaxed">
-                For questions about care, cost, services, or availability, please contact us anytime by phone or email.
+          <div ref={heroRef} className={`relative z-10 h-full flex items-center justify-center px-4 transition-all duration-1200 ease-out ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+            <div className="text-center text-white max-w-4xl">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                Let's Start a<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400">
+                  Conversation
+                </span>
+              </h1>
+              <p className="text-xl sm:text-2xl mb-8 opacity-90 leading-relaxed">
+                Your loved one deserves exceptional care.<br />
+                We're here to answer every question and guide you through each step.
               </p>
-
-              <div className="space-y-6">
-                <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg hover:from-blue-100 hover:to-blue-200 transition-all duration-300">
-                  <div className="bg-blue-500 p-3 rounded-full">
-                    <FaMapMarkerAlt className="text-white text-lg" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-800">Wilsonville Address</p>
-                    <p className="text-gray-600">6770 SW Molalla Bend Road, Wilsonville, OR 97070</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg hover:from-blue-100 hover:to-blue-200 transition-all duration-300">
-                  <div className="bg-blue-500 p-3 rounded-full">
-                    <FaMapMarkerAlt className="text-white text-lg" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-800">Tualatin Address</p>
-                    <p className="text-gray-600">3030 SW 66th Ave, Tualatin, OR 97062</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-lg hover:from-green-100 hover:to-green-200 transition-all duration-300">
-                  <div className="bg-green-500 p-3 rounded-full">
-                    <FaPhoneAlt className="text-white text-lg" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-800">Phone</p>
-                    <a href="tel:9788818055" className="text-gray-600 hover:text-green-600 transition-colors">
-                      (978) 881-8055
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-lg hover:from-indigo-100 hover:to-indigo-200 transition-all duration-300">
-                  <div className="bg-indigo-500 p-3 rounded-full">
-                    <FaFax className="text-white text-lg" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-800">Fax</p>
-                    <p className="text-gray-600">(503) 342-2212</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg hover:from-purple-100 hover:to-purple-200 transition-all duration-300">
-                  <div className="bg-purple-500 p-3 rounded-full">
-                    <FaEnvelope className="text-white text-lg" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-800">Email</p>
-                    <a href="mailto:westfordhomesinc@gmail.com" className="text-gray-600 hover:text-purple-600 transition-colors">
-                      westfordhomesinc@gmail.com
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8 flex gap-4 justify-center">
-                <a href="#" className="bg-blue-600 p-3 rounded-full hover:bg-blue-700 transition-colors transform hover:scale-110">
-                  <FaFacebookF className="text-white text-lg" />
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+                <a href="tel:9788818055" className="bg-white text-purple-800 px-10 py-5 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center justify-center space-x-2">
+                  <FaPhoneAlt />
+                  <span>(978) 881-8055</span>
                 </a>
-                <a href="#" className="bg-blue-400 p-3 rounded-full hover:bg-blue-500 transition-colors transform hover:scale-110">
-                  <FaTwitter className="text-white text-lg" />
-                </a>
-                <a href="#" className="bg-pink-600 p-3 rounded-full hover:bg-pink-700 transition-colors transform hover:scale-110">
-                  <FaInstagram className="text-white text-lg" />
+                <a href="#contact-form" className="bg-purple-600 hover:bg-purple-700 text-white border-2 border-white px-10 py-5 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl">
+                  Send Message
                 </a>
               </div>
             </div>
+          </div>
+        </section>
 
-            <div className="bg-white p-8 rounded-2xl shadow-xl">
-              <h3 className="text-2xl font-bold mb-6 text-[#2B5699]">What Families Say</h3>
-              <div className="relative h-32 overflow-hidden">
-                {testimonials.map((testimonial, index) => (
-                  <div
-                    key={index}
-                    className={`absolute inset-0 transition-all duration-500 transform ${
-                      index === currentTestimonial
-                        ? 'translate-y-0 opacity-100'
-                        : 'translate-y-full opacity-0'
-                    }`}
-                  >
-                    <blockquote className="text-gray-700 italic mb-4">
-                      {`"${testimonial.text}"`}
-                    </blockquote>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-                        <FaHeart className="text-white text-sm" />
+        {/* Quick Contact Cards */}
+        <section className="py-16 px-4 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { icon: FaPhoneAlt, title: 'Call Us', value: '(978) 881-8055', href: 'tel:9788818055', color: 'from-blue-500 to-blue-600' },
+                { icon: FaEnvelope, title: 'Email Us', value: 'westfordhomesinc@gmail.com', href: 'mailto:westfordhomesinc@gmail.com', color: 'from-purple-500 to-purple-600' },
+                { icon: FaFax, title: 'Fax', value: '(503) 342-2212', href: '#', color: 'from-green-500 to-green-600' },
+                { icon: FaClock, title: 'Available', value: '24/7 Emergency Support', href: '#', color: 'from-orange-500 to-orange-600' }
+              ].map((card, idx) => (
+                <a 
+                  key={idx}
+                  ref={el => contactCardsRefs.current[idx] = el}
+                  href={card.href}
+                  className={`bg-gradient-to-br ${card.color} p-6 rounded-2xl text-white hover:shadow-2xl transition-all duration-700 ease-out transform hover:-translate-y-2 ${contactCardsVisible[idx] ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+                  style={{transitionDelay: `${idx * 100}ms`}}
+                >
+                  <card.icon className="text-4xl mb-4" />
+                  <h3 className="text-lg font-bold mb-2">{card.title}</h3>
+                  <p className="text-sm opacity-90">{card.value}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Form & Info Section */}
+        <section id="contact-form" className="py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12">
+              {/* Contact Form */}
+              <div ref={formRef} className={`transition-all duration-1000 ease-out ${formVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
+                <div className="bg-white p-8 lg:p-12 rounded-3xl shadow-2xl">
+                  {!isSubmitted ? (
+                    <>
+                      <div className="mb-8">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3">Send Us a Message</h2>
+                        <p className="text-gray-600">We'll get back to you within 24 hours</p>
+                      </div>
+
+                      {error && (
+                        <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded">
+                          {error}
+                        </div>
+                      )}
+
+                      <form onSubmit={handleSubmit} className="space-y-6">
+                        <div>
+                          <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">Full Name *</label>
+                          <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                            disabled={isLoading}
+                            className="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                            placeholder="John Doe"
+                          />
+                        </div>
+
+                        <div>
+                          <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">Email Address *</label>
+                          <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            disabled={isLoading}
+                            className="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                            placeholder="john@example.com"
+                          />
+                        </div>
+
+                        <div>
+                          <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                          <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            disabled={isLoading}
+                            className="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                            placeholder="(123) 456-7890"
+                          />
+                        </div>
+
+                        <div>
+                          <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">Your Message *</label>
+                          <textarea
+                            id="message"
+                            name="message"
+                            value={formData.message}
+                            onChange={handleChange}
+                            required
+                            rows={6}
+                            disabled={isLoading}
+                            className="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 resize-none disabled:opacity-50"
+                            placeholder="Tell us about your needs..."
+                          />
+                        </div>
+
+                        <button
+                          type="submit"
+                          disabled={isLoading}
+                          className="w-full bg-gradient-to-r from-purple-600 to-purple-800 text-white py-5 px-6 rounded-xl hover:from-purple-700 hover:to-purple-900 transition-all duration-300 font-semibold text-lg transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isLoading ? 'Sending...' : 'Send Message'}
+                        </button>
+                      </form>
+                    </>
+                  ) : (
+                    <div className="text-center py-12">
+                      <div className="animate-bounce mb-6">
+                        <FaCheckCircle className="text-7xl text-green-500 mx-auto" />
+                      </div>
+                      <h3 className="text-3xl font-bold text-green-600 mb-4">Message Sent!</h3>
+                      <p className="text-gray-600 text-lg">Thank you for reaching out. We'll get back to you within 24 hours.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Quick Info & Social */}
+              <div ref={quickInfoRef} className={`space-y-6 transition-all duration-1000 ease-out delay-200 ${quickInfoVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
+                {/* Locations */}
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-3xl shadow-xl">
+                  <h3 className="text-2xl font-bold text-blue-900 mb-6">Our Locations</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-blue-500 p-3 rounded-full flex-shrink-0">
+                        <FaMapMarkerAlt className="text-white text-xl" />
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-800">{testimonial.author}</p>
-                        <p className="text-sm text-gray-500">{testimonial.role}</p>
+                        <p className="font-semibold text-blue-900">Wilsonville</p>
+                        <p className="text-blue-800">6770 SW Molalla Bend Road<br />Wilsonville, OR 97070</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-blue-500 p-3 rounded-full flex-shrink-0">
+                        <FaMapMarkerAlt className="text-white text-xl" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-blue-900">Tualatin</p>
+                        <p className="text-blue-800">21446 SW Christensen CT<br />Tualatin, OR 97062</p>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-              <div className="flex justify-center mt-4 space-x-2">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentTestimonial(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentTestimonial ? 'bg-blue-500 scale-125' : 'bg-gray-300'
-                    }`}
-                  />
-                ))}
+                </div>
+
+                {/* Hours & Emergency */}
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-3xl shadow-xl">
+                  <h3 className="text-2xl font-bold text-purple-900 mb-6">Hours & Availability</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-4">
+                      <FaClock className="text-purple-600 text-3xl" />
+                      <div>
+                        <p className="font-semibold text-purple-900">Office Hours</p>
+                        <p className="text-purple-800">Mon-Fri: 8AM - 6PM<br />Sat: 9AM - 4PM</p>
+                      </div>
+                    </div>
+                    <div className="bg-purple-200 p-4 rounded-xl">
+                      <p className="text-purple-900 font-semibold">🚨 24/7 Emergency Support Available</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Social Media */}
+                <div className="bg-white p-8 rounded-3xl shadow-xl">
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6">Connect With Us</h3>
+                  <div className="flex gap-4 justify-center">
+                    <a href="#" className="bg-blue-600 p-4 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 shadow-lg">
+                      <FaFacebookF className="text-white text-2xl" />
+                    </a>
+                    <a href="#" className="bg-blue-400 p-4 rounded-full hover:bg-blue-500 transition-all duration-300 transform hover:scale-110 shadow-lg">
+                      <FaTwitter className="text-white text-2xl" />
+                    </a>
+                    <a href="#" className="bg-pink-600 p-4 rounded-full hover:bg-pink-700 transition-all duration-300 transform hover:scale-110 shadow-lg">
+                      <FaInstagram className="text-white text-2xl" />
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+        </section>
 
-          <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300">
-            {!isSubmitted ? (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-[#2B5699] mb-2">Send a Message</h3>
-                  <p className="text-gray-600">{"We'll get back to you within 24 hours"}</p>
+        {/* Maps Section */}
+        <section ref={mapsRef} className={`py-16 px-4 bg-gray-100 transition-all duration-1000 ease-out ${mapsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-800 mb-4">Visit Our Beautiful Locations</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Two convenient locations in the Portland Metro Area, offering compassionate senior care in serene environments.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white rounded-3xl shadow-2xl overflow-hidden transform hover:scale-105 transition-all duration-300">
+                <div className="p-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+                  <h3 className="text-2xl font-bold mb-2">Wilsonville Location</h3>
+                  <p className="opacity-90">6770 SW Molalla Bend Road, Wilsonville, OR 97070</p>
                 </div>
+                <iframe
+                  title="Westford Homes Wilsonville Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2799.5!2d-122.7644!3d45.3311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54957b8b0f4c2c5b%3A0x8b96e6edb8f3e0b!2s6770%20SW%20Molalla%20Bend%20Rd%2C%20Wilsonville%2C%20OR%2097070!5e0!3m2!1sen!2sus!4v1689941123456!5m2!1sen!2sus"
+                  width="100%"
+                  height="400"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                />
+              </div>
 
-                {error && (
-                  <div className="text-red-600 text-center mb-4">{error}</div>
-                )}
-
-                <div className="relative">
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    disabled={isLoading}
-                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 peer disabled:opacity-50"
-                    placeholder=" "
-                  />
-                  <label
-                    htmlFor="name"
-                    className="absolute left-4 top-4 text-gray-500 transition-all duration-300 pointer-events-none peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-500 peer-valid:-translate-y-6 peer-valid:scale-75"
-                  >
-                    Full Name
-                  </label>
+              <div className="bg-white rounded-3xl shadow-2xl overflow-hidden transform hover:scale-105 transition-all duration-300">
+                <div className="p-6 bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+                  <h3 className="text-2xl font-bold mb-2">Tualatin Location</h3>
+                  <p className="opacity-90">21446 SW Christensen CT, Tualatin, OR 97062</p>
                 </div>
+                <iframe
+                  title="Westford Homes Tualatin Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2801.4!2d-122.7467!3d45.3768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54950a3b7f4c2c5b%3A0x8b96e6edb8f3e0b!2s21446%20SW%20Christensen%20CT%2C%20Tualatin%2C%20OR%2097062!5e0!3m2!1sen!2sus!4v1698765432109!5m2!1sen!2sus"
+                  width="100%"
+                  height="400"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
 
-                <div className="relative">
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    disabled={isLoading}
-                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 peer disabled:opacity-50"
-                    placeholder=" "
-                  />
-                  <label
-                    htmlFor="email"
-                    className="absolute left-4 top-4 text-gray-500 transition-all duration-300 pointer-events-none peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-500 peer-valid:-translate-y-6 peer-valid:scale-75"
-                  >
-                    Email Address
-                  </label>
-                </div>
+        {/* Amenities Section */}
+        <section className="py-16 px-4 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-800 mb-4">Our Amenities</h2>
+              <p className="text-lg text-gray-600">Everything your loved one needs for comfort and happiness</p>
+            </div>
 
-                <div className="relative">
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={6}
-                    disabled={isLoading}
-                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 peer resize-none disabled:opacity-50"
-                    placeholder=" "
-                  />
-                  <label
-                    htmlFor="message"
-                    className="absolute left-4 top-4 text-gray-500 transition-all duration-300 pointer-events-none peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-500 peer-valid:-translate-y-6 peer-valid:scale-75"
-                  >
-                    Your Message
-                  </label>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className={`w-full bg-gradient-to-r from-[#2B5699] to-blue-600 text-white py-4 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-medium transform hover:scale-105 shadow-lg hover:shadow-xl ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {amenities.map((amenity, idx) => (
+                <div
+                  key={idx}
+                  ref={el => amenitiesRefs.current[idx] = el}
+                  className={`bg-gradient-to-br ${amenity.color} p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-700 ease-out transform hover:-translate-y-2 ${amenitiesVisible[idx] ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+                  style={{transitionDelay: `${idx * 50}ms`}}
                 >
-                  {isLoading ? 'Sending...' : 'Send Message'}
-                </button>
-              </form>
-            ) : (
-              <div className="text-center py-12">
-                <div className="animate-bounce mb-6">
-                  <FaCheckCircle className="text-6xl text-green-500 mx-auto" />
+                  <div className="text-5xl mb-4">{amenity.icon}</div>
+                  <h4 className={`font-bold ${amenity.textColor} mb-2 text-lg`}>{amenity.title}</h4>
+                  <p className="text-gray-700">{amenity.desc}</p>
                 </div>
-                <h3 className="text-2xl font-bold text-green-600 mb-4">Message Sent!</h3>
-                <p className="text-gray-600">{"Thank you for reaching out. We'll get back to you within 24 hours."}</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-6 py-16 bg-[#082125]">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-[#D2D0BB] mb-6">Visit Our Beautiful Locations</h2>
-            <p className="text-[#D2D0BB] max-w-3xl mx-auto text-lg leading-relaxed">
-              Westford Adult Family Home operates two locations in the Portland Metro Area, offering compassionate senior care in serene and accessible environments. Visit us in Wilsonville’s Charbonneau District or our new Tualatin location, both designed for comfort and accessibility.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div className="rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition-all duration-300">
-              <h3 className="text-xl font-bold text-[#D2D0BB] p-4">Wilsonville Location</h3>
-              <p className="text-[#D2D0BB] px-4 pb-4">6770 SW Molalla Bend Road, Wilsonville, OR 97070</p>
-              <iframe
-                title="Westford Homes Wilsonville Location"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2799.5!2d-122.7644!3d45.3311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54957b8b0f4c2c5b%3A0x8b96e6edb8f3e0b!2s6770%20SW%20Molalla%20Bend%20Rd%2C%20Wilsonville%2C%20OR%2097070!5e0!3m2!1sen!2sus!4v1689941123456!5m2!1sen!2sus"
-                width="100%"
-                height="400"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-            <div className="rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition-all duration-300">
-              <h3 className="text-xl font-bold text-[#D2D0BB] p-4">Tualatin Location</h3>
-              <p className="text-[#D2D0BB] px-4 pb-4">3030 SW 66th Ave, Tualatin, OR 97062</p>
-              <iframe
-                title="Westford Homes Tualatin Location"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2801.4!2d-122.7467!3d45.3768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54950a3b7f4c2c5b%3A0x8b96e6edb8f3e0b!2s3030%20SW%2066th%20Ave%2C%20Tualatin%2C%20OR%2097062!5e0!3m2!1sen!2sus!4v1698765432109!5m2!1sen!2sus"
-                width="100%"
-                height="400"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+              ))}
             </div>
           </div>
-
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-[#2B5699] text-center">Our Amenities</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-lg">
-                <h4 className="font-bold text-blue-800 mb-2">🏌️ Golf Course Access</h4>
-                <p className="text-gray-700">Beautiful golf course views and access</p>
-              </div>
-              <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg">
-                <h4 className="font-bold text-green-800 mb-2">🏊 Swimming Pools</h4>
-                <p className="text-gray-700">Multiple swimming facilities nearby</p>
-              </div>
-              <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-lg">
-                <h4 className="font-bold text-purple-800 mb-2">🌲 Nature Walks</h4>
-                <p className="text-gray-700">Scenic walking paths through nature</p>
-              </div>
-              <div className="bg-gradient-to-r from-orange-50 to-orange-100 p-6 rounded-lg">
-                <h4 className="font-bold text-orange-800 mb-2">🛏️ Private Bedrooms</h4>
-                <p className="text-gray-700">Spacious, private rooms for resident comfort</p>
-              </div>
-              <div className="bg-gradient-to-r from-indigo-50 to-indigo-100 p-6 rounded-lg">
-                <h4 className="font-bold text-indigo-800 mb-2">👩‍⚕️ 24/7 Care Staff</h4>
-                <p className="text-gray-700">Dedicated caregivers available round-the-clock</p>
-              </div>
-              <div className="bg-gradient-to-r from-red-50 to-red-100 p-6 rounded-lg">
-                <h4 className="font-bold text-red-800 mb-2">🚿 Accessible Bathrooms</h4>
-                <p className="text-gray-700">Wheelchair-accessible bathrooms with roll-in showers</p>
-              </div>
-              <div className="bg-gradient-to-r from-teal-50 to-teal-100 p-6 rounded-lg">
-                <h4 className="font-bold text-teal-800 mb-2">🍽️ Community Dining</h4>
-                <p className="text-gray-700">Nutritious meals in a warm, social setting</p>
-              </div>
-              <div className="bg-gradient-to-r from-pink-50 to-pink-100 p-6 rounded-lg">
-                <h4 className="font-bold text-pink-800 mb-2">🐾 Pet-Friendly Environment</h4>
-                <p className="text-gray-700">Welcoming space for residents’ pets</p>
-              </div>
-              <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-6 rounded-lg">
-                <h4 className="font-bold text-yellow-800 mb-2">🎉 Daily Activities & Events</h4>
-                <p className="text-gray-700">Engaging activities and social events for residents</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
       <Footer />
     </>

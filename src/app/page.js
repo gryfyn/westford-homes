@@ -5,84 +5,56 @@ import Header from '@/components/Header'
 import Image from 'next/image'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function Home() {
-  const [hoveredCard, setHoveredCard] = useState(null)
+  const [showGalleryModal, setShowGalleryModal] = useState(false)
+  const [currentImage, setCurrentImage] = useState(0)
 
-  // Images for the grid (replacing carousel)
-  const gridImages = [
-    {
-      id: 1,
-      src: "/assets/personal-bathtub.jpg",
-      alt: "Personal Bathtub",
-      description: "Personal Bathtub"
-    },
-    {
-      id: 2,
-      src: "/assets/peaceful-outdoor-space.jpg", 
-      alt: "Peaceful Outdoor Space",
-      description: "Peaceful Outdoor Space"
-    },
-    {
-      id: 3,
-      src: "/assets/personal-toilets.jpg",
-      alt: "Personal Toilets",
-      description: "Personal Toilets"
-    },
-    {
-      id: 4,
-      src: "/assets/spacious-private-bedrooms.jpg",
-      alt: "Spacious Private Bedrooms",
-      description: "Spacious Private Bedrooms"
-    },
-    {
-      id: 5,
-      src: "/assets/outdoorspace.jpg",
-      alt: "Outdoor Space",
-      description: "Outdoor Space"
-    },
-    {
-      id: 6,
-      src: "/assets/community-meals.jpeg",
-      alt: "Community Meals",
-      description: "Community Meals"
-    }
-  ]
+  // Animation states
+  const [heroVisible, setHeroVisible] = useState(false)
+  const [caringTitleVisible, setCaringTitleVisible] = useState(false)
+  const [careCardsVisible, setCareCardsVisible] = useState([])
+  const [galleryTitleVisible, setGalleryTitleVisible] = useState(false)
+  const [galleryMainVisible, setGalleryMainVisible] = useState(false)
+  const [galleryGridVisible, setGalleryGridVisible] = useState(false)
+  const [testimonialsTitleVisible, setTestimonialsTitleVisible] = useState(false)
+  const [testimonialsVisible, setTestimonialsVisible] = useState([])
+  const [tourFormVisible, setTourFormVisible] = useState(false)
+  const [tourMapVisible, setTourMapVisible] = useState(false)
+  const [ctaVisible, setCtaVisible] = useState(false)
 
-  const features = [
-    {
-      id: 1,
-      icon: "🏠",
-      title: "Comfort and Safety",
-      description: "We offer a wide and comprehensive range of care and services. From light care to end-of-life including dementia and hospice care.",
-      color: "border-blue-500",
-      bgColor: "bg-blue-50"
-    },
-    {
-      id: 2,
-      icon: "📏",
-      title: "Spacious",
-      description: "Large bedrooms with roll-in showers, as well as open and comfortable common areas. Our AFH has wide hallways and is fully wheelchair accessible.",
-      color: "border-green-500",
-      bgColor: "bg-green-50"
-    },
-    {
-      id: 3,
-      icon: "🕐",
-      title: "Care Anytime",
-      description: "We are staffed 24/7. Our centralized call systems ensures that residents get care whenever they need, without waiting.",
-      color: "border-indigo-500",
-      bgColor: "bg-indigo-50"
-    },
-    {
-      id: 4,
-      icon: "🌳",
-      title: "Outdoor Space",
-      description: "Spacious and pleasant outdoor deck offers residents the ability to enjoy the outdoors in wheelchairs or walkers.",
-      color: "border-purple-500",
-      bgColor: "bg-purple-50"
-    }
+  // Refs
+  const heroRef = useRef(null)
+  const caringTitleRef = useRef(null)
+  const careCardsRefs = useRef([])
+  const galleryTitleRef = useRef(null)
+  const galleryMainRef = useRef(null)
+  const galleryGridRef = useRef(null)
+  const testimonialsTitleRef = useRef(null)
+  const testimonialsRefs = useRef([])
+  const tourFormRef = useRef(null)
+  const tourMapRef = useRef(null)
+  const ctaRef = useRef(null)
+
+  const galleryImages = [
+    { id: 1, src: "/assets/image1.PNG", alt: "Large gallery image 1" },
+    { id: 2, src: "/assets/image2.jpg", alt: "Gallery image 2" },
+    { id: 3, src: "/assets/image3.jpg", alt: "Gallery image 3" },
+    { id: 4, src: "/assets/image4.jpg", alt: "Gallery image 4" },
+    { id: 5, src: "/assets/image5.jpg", alt: "Gallery image 5" },
+    { id: 6, src: "/assets/image6.webp", alt: "Gallery image 6" },
+    { id: 7, src: "/assets/image7.webp", alt: "Gallery image 7" },
+    { id: 8, src: "/assets/image8.webp", alt: "Gallery image 8" },
+    { id: 9, src: "/assets/image9.webp", alt: "Gallery image 9" },
+    { id: 10, src: "/assets/image10.webp", alt: "Gallery image 10" },
+    { id: 11, src: "/assets/image11.webp", alt: "Gallery image 11" },
+    { id: 12, src: "/assets/image12.webp", alt: "Gallery image 12" },
+    { id: 13, src: "/assets/image13.webp", alt: "Gallery image 13" },
+    { id: 14, src: "/assets/image14.webp", alt: "Gallery image 14" },
+    { id: 15, src: "/assets/image15.webp", alt: "Gallery image 15" },
+    { id: 16, src: "/assets/image16.webp", alt: "Gallery image 16" },
+    { id: 17, src: "/assets/image17.webp", alt: "Gallery image 17" },
   ]
 
   const testimonials = [
@@ -93,7 +65,6 @@ export default function Home() {
       date: "September 17, 2023",
       title: "Perfect place for mom!",
       text: "I can't say enough good things about Joe and his staff. It has meant the world to us to know such great people are taking care of mom. She has become more alert and interactive since being at Joe's. It feels like a home. It is always very clean, very welcoming, and lively. We know she is safe and well taken care of.",
-      rating: 5
     },
     {
       id: 2,
@@ -102,7 +73,6 @@ export default function Home() {
       date: "September 5, 2023",
       title: "GREAT PLACE!",
       text: "Westford Homes truly is a home! Very caring, friendly, and helpful staff. Willing to do whatever it takes to make my spouse's stay as safe and comfortable as possible. Would highly recommend them!",
-      rating: 5
     },
     {
       id: 3,
@@ -111,17 +81,84 @@ export default function Home() {
       date: "August 23, 2023",
       title: "A Place like home",
       text: "The world a brighter place, May you continue to touch more lives in the future as you have done so for my Dad!",
-      rating: 5
     }
   ]
 
-  const renderStars = (rating) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <span key={i} className={`text-lg ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}>
-        ⭐
-      </span>
-    ))
-  }
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '0px'
+    }
+
+    const createObserver = (setter) => new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setter(true)
+        }
+      })
+    }, observerOptions)
+
+    const heroObserver = createObserver(setHeroVisible)
+    const caringTitleObserver = createObserver(setCaringTitleVisible)
+    const galleryTitleObserver = createObserver(setGalleryTitleVisible)
+    const galleryMainObserver = createObserver(setGalleryMainVisible)
+    const galleryGridObserver = createObserver(setGalleryGridVisible)
+    const testimonialsTitleObserver = createObserver(setTestimonialsTitleVisible)
+    const tourFormObserver = createObserver(setTourFormVisible)
+    const tourMapObserver = createObserver(setTourMapVisible)
+    const ctaObserver = createObserver(setCtaVisible)
+
+    const careCardsObservers = careCardsRefs.current.map((ref, index) => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setCareCardsVisible(prev => {
+              const newState = [...prev]
+              newState[index] = true
+              return newState
+            })
+          }
+        })
+      }, observerOptions)
+      
+      if (ref) observer.observe(ref)
+      return observer
+    })
+
+    const testimonialsObservers = testimonialsRefs.current.map((ref, index) => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setTestimonialsVisible(prev => {
+              const newState = [...prev]
+              newState[index] = true
+              return newState
+            })
+          }
+        })
+      }, observerOptions)
+      
+      if (ref) observer.observe(ref)
+      return observer
+    })
+
+    if (heroRef.current) heroObserver.observe(heroRef.current)
+    if (caringTitleRef.current) caringTitleObserver.observe(caringTitleRef.current)
+    if (galleryTitleRef.current) galleryTitleObserver.observe(galleryTitleRef.current)
+    if (galleryMainRef.current) galleryMainObserver.observe(galleryMainRef.current)
+    if (galleryGridRef.current) galleryGridObserver.observe(galleryGridRef.current)
+    if (testimonialsTitleRef.current) testimonialsTitleObserver.observe(testimonialsTitleRef.current)
+    if (tourFormRef.current) tourFormObserver.observe(tourFormRef.current)
+    if (tourMapRef.current) tourMapObserver.observe(tourMapRef.current)
+    if (ctaRef.current) ctaObserver.observe(ctaRef.current)
+
+    return () => {
+      [heroObserver, caringTitleObserver, galleryTitleObserver, galleryMainObserver, galleryGridObserver, 
+       testimonialsTitleObserver, tourFormObserver, tourMapObserver, ctaObserver].forEach(obs => obs.disconnect())
+      careCardsObservers.forEach(observer => observer.disconnect())
+      testimonialsObservers.forEach(observer => observer.disconnect())
+    }
+  }, [])
 
   return (
     <>
@@ -546,283 +583,130 @@ export default function Home() {
 
       <main className="min-h-screen bg-[#082125]">
         {/* Hero Section */}
-        <section className="relative text-white py-12 sm:py-20 lg:py-24 px-4 overflow-hidden min-h-[70vh] sm:min-h-[80vh] flex items-center">
-          {/* Background Image */}
+        <section className="relative h-screen w-full overflow-hidden text-white">
           <div className="absolute inset-0">
-            <Image
-              src="/assets/westford-homes-oregon.jpg"
-              alt="Westford Homes - Adult Foster Home in Wilsonville, Oregon"
-              fill
-              className="object-cover"
-              priority
-            />
+            <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover">
+              <source src="/assets/westford-homes-oregon.mp4" type="video/mp4" />
+            </video>
           </div>
-          
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/50 to-yellow-500/40"></div>
-          <div className="absolute inset-0 bg-black/20"></div>
-          
-          {/* Decorative Elements */}
-          <div className="absolute top-10 right-10 w-16 h-16 sm:w-32 sm:h-32 bg-white/10 rounded-full blur-xl"></div>
-          <div className="absolute bottom-10 left-10 w-24 h-24 sm:w-48 sm:h-48 bg-white/5 rounded-full blur-2xl"></div>
-          
-          <div className="relative max-w-7xl mx-auto w-full">
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-              {/* Left Column - Text */}
-              <div className="space-y-6 sm:space-y-8">
-                <div className="animate-fade-in">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
-                    Westford Homes
-                  </h1>
-                  <div className="w-16 sm:w-24 h-1 bg-white mb-6 sm:mb-8"></div>
-                  <p className="text-lg sm:text-xl md:text-2xl font-light mb-6 sm:mb-8 leading-relaxed">
-                    Adult Foster Home located at Charbonneau District in Wilsonville, Oregon
-                  </p>
-                  <p className="text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed opacity-90">
-                    Receive safe and competent personal care at adult Foster home licensed in Clackamas county Oregon.
-                  </p>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link 
-                    href="/contact" 
-                    className="inline-flex items-center justify-center bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-sm sm:text-base"
-                  >
-                    <span className="mr-2">📞</span>
-                    Contact Us
-                  </Link>
-                  <Link 
-                    href="/services" 
-                    className="inline-flex items-center justify-center border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:bg-white hover:text-blue-600 text-sm sm:text-base"
-                  >
-                    <span className="mr-2">🏥</span>
-                    View Our Care Services
-                  </Link>
-                </div>
-              </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#2b0f3a]/70 via-[#3a155c]/60 to-[#082125]/80"></div>
 
-              {/* Right Column - Empty space for balance */}
-              <div className="relative lg:block hidden">
-                {/* This column is now empty as the image is in the background */}
-              </div>
+         
+
+          <div ref={heroRef} className={`relative z-10 flex flex-col items-center justify-center text-center h-full px-4 max-w-7xl mx-auto transition-all duration-1200 ease-out ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{color: '#FFFFF0'}}>
+            <h1 className="font-bold leading-tight space-y-2 font-serif">
+              <span className="block text-5xl sm:text-6xl lg:text-6xl">Westford Homes</span>
+              <span className="block text-xl sm:text-2xl font-light">Adult Foster Home in Charbonneau District</span>
+              <span className="block text-base sm:text-lg opacity-90">Wilsonville, Oregon</span>
+            </h1>
+            <p className="mt-6 text-lg sm:text-xl font-light tracking-wide italic opacity-90 font-serif max-w-2xl">
+              Receive safe and competent personal care at adult Foster home licensed in Clackamas county Oregon.
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row gap-6">
+              <Link href="/contact" className="bg-white text-purple-800 px-10 py-5 rounded-xl font-semibold transition transform hover:scale-105 hover:shadow-xl">Contact Us</Link>
+              <Link href="/contact" className="border-2 border-white px-10 py-5 rounded-xl font-semibold transition transform hover:bg-white hover:text-purple-800 hover:scale-105">Schedule a Tour</Link>
             </div>
           </div>
         </section>
 
-        {/* Caring for Local Seniors Section */}
-        <section className="py-12 sm:py-16 lg:py-20 px-4">
+        {/* Caring Section */}
+        <section className="py-16 sm:py-20 lg:py-24 px-4 bg-gradient-to-b from-gray-50 to-white">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6" style={{ color: '#D2D0BB' }}>
-                Caring for Local Seniors
-              </h2>
-              <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6 sm:mb-8"></div>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed px-4 sm:px-0">
-                In our adult foster home in Wilsonville Oregon we provide loving and personalized senior care. It's an excellent alternative to institutional assisted living and nursing home facilities, or if you can't continue to live in your own home as your needs increase.
+            <div ref={caringTitleRef} className={`text-center mb-12 sm:mb-16 lg:mb-20 transition-all duration-1000 ease-out ${caringTitleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6" style={{ color: '#D2D0BB' }}>Caring for Local Seniors</h2>
+              <div className="w-20 sm:w-24 h-1 bg-gradient-to-r from-purple-600 to-purple-700 mx-auto mb-6 sm:mb-8"></div>
+              <p className="text-lg sm:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed px-4 sm:px-0">
+                In our adult foster home in Wilsonville Oregon we provide loving and personalized senior care. It's an excellent alternative to institutional assisted living and nursing home facilities.
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
-              {/* Left Column - Care Description */}
-              <div className="space-y-6 sm:space-y-8">
-                <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl">
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6">
-                    From Light Care to End-of-Life
-                  </h3>
-                  <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-4 sm:mb-6">
-                    We can meet a wide range of care and personal needs. From basic supportive assistance to end-of-life care, you will receive safe and competent assistance and support whenever you need help, round the clock.
-                  </p>
-                  <div className="bg-blue-50 p-4 sm:p-6 rounded-xl">
-                    <p className="text-blue-800 font-semibold text-base sm:text-lg">
-                      Making this a place for mom or a place for dad
+            <div className="grid md:grid-cols-3 gap-8 lg:gap-10 mb-16 lg:mb-20">
+              {['Personalized Care', 'Safe & Secure Environment', 'Family-Like Atmosphere'].map((title, idx) => (
+                <div key={idx} ref={el => careCardsRefs.current[idx] = el} className={`bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-2 ${careCardsVisible[idx] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{transitionDelay: `${idx * 150}ms`}}>
+                  <div className="h-48 flex items-center justify-center" style={{ backgroundColor: '#082125' }}>
+                    <svg className="w-20 h-20 text-white opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      {idx === 0 && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>}
+                      {idx === 1 && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>}
+                      {idx === 2 && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM6 21a2 2 0 100-4 2 2 0 000 4z"></path>}
+                    </svg>
+                  </div>
+                  <div className="p-8">
+                    <h3 className="text-2xl font-bold text-gray-800 mb-4">{title}</h3>
+                    <p className="text-gray-600 text-lg leading-relaxed">
+                      {idx === 0 && "Compassionate, individualized care plans tailored to each resident's unique needs and preferences."}
+                      {idx === 1 && "Fully wheelchair accessible with 24/7 supervision, ensuring safety and comfort at all times."}
+                      {idx === 2 && "Genuine warmth and companionship in a home-like setting with dedicated caregivers who treat residents like family."}
                     </p>
                   </div>
                 </div>
-
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 sm:p-8 rounded-2xl shadow-xl">
-                  <h3 className="text-xl sm:text-2xl font-bold mb-4">
-                    Wheelchair Access, Spacious, Comfortable
-                  </h3>
-                  <p className="text-base sm:text-lg leading-relaxed opacity-90">
-                    Our facility is designed with accessibility and comfort in mind, ensuring all residents can navigate safely and comfortably.
-                  </p>
-                </div>
-              </div>
-
-              {/* Right Column - Image */}
-              <div className="relative order-first lg:order-last">
-                <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-                  <Image
-                    src="/assets/interior-caring.jpg"
-                    alt="Caring environment at Westford Homes"
-                    width={600}
-                    height={600}
-                    className="object-cover w-full h-[300px] sm:h-[400px] lg:h-[600px]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section className="py-12 sm:py-16 lg:py-20 px-4 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 sm:mb-6">
-                Our Care Features
-              </h2>
-              <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6 sm:mb-8"></div>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4 sm:px-0">
-                Comprehensive care services designed around your comfort and safety
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-              {features.map((feature, index) => (
-                <div
-                  key={feature.id}
-                  className={`bg-white p-6 sm:p-8 rounded-2xl shadow-lg border-l-4 ${feature.color} transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${
-                    hoveredCard === feature.id ? feature.bgColor : ''
-                  } animate-fade-in-up`}
-                  onMouseEnter={() => setHoveredCard(feature.id)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                  style={{
-                    animationDelay: `${index * 100}ms`
-                  }}
-                >
-                  <div className="text-3xl sm:text-4xl mb-4">{feature.icon}</div>
-                  <h3 className="font-bold text-gray-800 mb-4 text-lg sm:text-xl">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-                    {feature.description}
-                  </p>
-                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Image Grid Section */}
-        <section className="py-12 sm:py-16 lg:py-20 px-4" style={{ backgroundColor: '#082125' }}>
+        {/* Gallery Section */}
+        <section className="py-16 sm:py-20 lg:py-24 px-4 bg-gradient-to-b from-gray-50 to-white">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6" style={{ color: '#D2D0BB' }}>
-                See Our Facilities
-              </h2>
-              <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6 sm:mb-8"></div>
-              <p className="text-lg sm:text-xl max-w-3xl mx-auto px-4 sm:px-0" style={{ color: '#D2D0BB' }}>
-                Take a visual tour of our comfortable and accessible facilities
-              </p>
+            <div className="mb-16 lg:mb-20">
+              <div ref={galleryTitleRef} className={`transition-all duration-1000 ease-out ${galleryTitleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-4" style={{ color: '#D2D0BB' }}>Gallery</h2>
+                <div className="flex justify-center items-center mb-4">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mr-4">Life at Westford Homes</h3>
+                </div>
+                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-8">
+                  Our facilities are designed to feel like home, with bright open spaces, comfortable private rooms, and beautiful gardens.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                <div ref={galleryMainRef} className={`relative rounded-2xl shadow-2xl overflow-hidden h-[300px] lg:h-full transition-all duration-1000 ease-out ${galleryMainVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
+                  <Image src={galleryImages[0].src} alt={galleryImages[0].alt} fill className="object-cover transition-transform duration-500 hover:scale-105" />
+                </div>
+
+                <div ref={galleryGridRef} className={`grid grid-cols-2 gap-4 transition-all duration-1000 ease-out delay-200 ${galleryGridVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
+                  {galleryImages.slice(1, 5).map((image) => (
+                    <div key={image.id} className="relative rounded-xl shadow-lg overflow-hidden h-40 sm:h-48">
+                      <Image src={image.src} alt={image.alt} fill className="object-cover transition-transform duration-500 hover:scale-105" />
+                    </div>
+                  ))}
+                  <button onClick={() => setShowGalleryModal(true)} className="text-purple-600 font-semibold hover:text-purple-800 transition-colors duration-300 cursor-pointer">View all photos</button>
+                </div>
+              </div>
             </div>
 
-            {/* 3x2 Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {gridImages.map((image, index) => (
-                <div key={image.id} className="relative rounded-2xl shadow-2xl overflow-hidden">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={400}
-                    height={300}
-                    className="w-full h-[200px] sm:h-[250px] lg:h-[300px] object-cover"
-                  />
-                  <div className="p-4 text-center" style={{ backgroundColor: '#082125', color: '#D2D0BB' }}>
-                    <h3 className="text-lg sm:text-xl font-bold">
-                      {image.description}
-                    </h3>
+            {showGalleryModal && (
+              <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50">
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <button onClick={() => setShowGalleryModal(false)} className="absolute top-6 right-6 text-white bg-black/50 hover:bg-black/70 rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold z-20 cursor-pointer">×</button>
+                  <button onClick={() => setCurrentImage((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1))} className="absolute left-4 sm:left-10 text-white bg-black/50 hover:bg-black/70 rounded-full w-12 h-12 flex items-center justify-center text-3xl z-20 cursor-pointer">←</button>
+                  <button onClick={() => setCurrentImage((prev) => (prev === galleryImages.length - 1 ? 0 : prev + 1))} className="absolute right-4 sm:right-10 text-white bg-black/50 hover:bg-black/70 rounded-full w-12 h-12 flex items-center justify-center text-3xl z-20 cursor-pointer">→</button>
+                  <div className="relative w-[90%] sm:w-[80%] lg:w-[70%] h-[70vh] overflow-hidden rounded-xl shadow-2xl">
+                    <Image src={galleryImages[currentImage].src} alt={galleryImages[currentImage].alt} fill className="object-contain" />
                   </div>
+                  <div className="absolute bottom-6 text-white text-lg font-medium bg-black/50 px-6 py-2 rounded-full">{currentImage + 1} / {galleryImages.length}</div>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
           </div>
         </section>
 
-        {/* Activities Section */}
-        <section className="py-12 sm:py-16 lg:py-20 px-4 bg-gradient-to-br from-blue-50 to-indigo-50">
+        {/* Testimonials */}
+        <section className="py-12 sm:py-16 lg:py-20 px-4" style={{ backgroundColor: '#ffffff' }}>
           <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
-              {/* Left Column - Image */}
-              <div className="relative order-last lg:order-first">
-                <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-                  <Image
-                    src="/assets/residents-activities.jpg"
-                    alt="Residents and family activities at Westford Homes"
-                    width={600}
-                    height={500}
-                    className="object-cover w-full h-[300px] sm:h-[400px] lg:h-[500px]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                </div>
-              </div>
-
-              {/* Right Column - Content */}
-              <div className="space-y-6 sm:space-y-8">
-                <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl">
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 sm:mb-6">
-                    Residents and Family Activities
-                  </h2>
-                  <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6">
-                    We believe in fostering connections and maintaining relationships. Our home encourages family visits and provides engaging activities for our residents.
-                  </p>
-                  <Link 
-                    href="/services" 
-                    className="inline-flex items-center bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
-                  >
-                    <span className="mr-2">🏥</span>
-                    View Our Care Services
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Testimonials Section */}
-        <section className="py-12 sm:py-16 lg:py-20 px-4" style={{ backgroundColor: '#082125' }}>
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6" style={{ color: '#D2D0BB' }}>
-                What Families Say
-              </h2>
-              <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-700 mx-auto mb-6 sm:mb-8"></div>
-              <p className="text-lg sm:text-xl max-w-3xl mx-auto px-4 sm:px-0" style={{ color: '#D2D0BB' }}>
-                Real stories from families who trust us with their loved ones
-              </p>
+            <div ref={testimonialsTitleRef} className={`text-center mb-12 sm:mb-16 transition-all duration-1000 ease-out ${testimonialsTitleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6" style={{ color: '#D2D0BB' }}>What Families Say</h2>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {testimonials.map((testimonial, index) => (
-                <div
-                  key={testimonial.id}
-                  className="relative bg-white/10 backdrop-blur-md p-6 sm:p-8 rounded-2xl shadow-xl border border-blue-500/30 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl animate-fade-in-up"
-                  style={{
-                    animationDelay: `${index * 100}ms`,
-                    color: '#D2D0BB'
-                  }}
-                >
+                <div key={testimonial.id} ref={el => testimonialsRefs.current[index] = el} className={`p-6 sm:p-8 rounded-2xl border border-blue-500/30 transition-all duration-700 ease-out ${testimonialsVisible[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{transitionDelay: `${index * 150}ms`, color: '#082125'}}>
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-700 rounded-t-2xl"></div>
-                  <div className="flex items-center mb-4">
-                    {renderStars(testimonial.rating)}
-                  </div>
-                  <h3 className="font-bold text-lg sm:text-xl mb-3" style={{ color: '#D2D0BB' }}>
-                    {testimonial.title}
-                  </h3>
-                  <p className="leading-relaxed mb-6 text-sm sm:text-base" style={{ color: '#D2D0BB' }}>
-                    "{testimonial.text}"
-                  </p>
+                  <h3 className="font-bold text-lg sm:text-xl mb-3">{testimonial.title}</h3>
+                  <p className="leading-relaxed mb-6 text-sm sm:text-base">"{testimonial.text}"</p>
                   <div className="border-t border-blue-500/20 pt-4">
-                    <p className="font-semibold text-sm sm:text-base" style={{ color: '#D2D0BB' }}>
-                      {testimonial.name}
-                    </p>
-                    <p className="text-xs sm:text-sm opacity-80" style={{ color: '#D2D0BB' }}>
-                      {testimonial.relation}
-                    </p>
-                    <p className="text-xs sm:text-sm opacity-60" style={{ color: '#D2D0BB' }}>
-                      {testimonial.date}
-                    </p>
+                    <p className="font-semibold text-sm sm:text-base">{testimonial.name}</p>
+                    <p className="text-xs sm:text-sm opacity-80">{testimonial.relation}</p>
+                    <p className="text-xs sm:text-sm opacity-60">{testimonial.date}</p>
                   </div>
                 </div>
               ))}
@@ -830,31 +714,65 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Call to Action Section */}
-        <section className="py-12 sm:py-16 lg:py-20 px-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-              Ready to Learn More?
-            </h2>
-            <p className="text-lg sm:text-xl mb-6 sm:mb-8 opacity-90 px-4 sm:px-0">
-              Contact us today to discuss how we can provide the best care for your loved one
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                href="/contact" 
-                className="inline-flex items-center justify-center bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-sm sm:text-base"
-              >
-                <span className="mr-2">📞</span>
-                Contact Us Today
-              </Link>
-              <Link 
-                href="/about" 
-                className="inline-flex items-center justify-center border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:bg-white hover:text-blue-600 text-sm sm:text-base"
-              >
-                <span className="mr-2">👨‍⚕️</span>
-                Meet Joe Kiere, RN
-              </Link>
+        {/* Tour Section */}
+        <section className="py-16 sm:py-20 lg:py-24 px-4 bg-gradient-to-b from-gray-50 to-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              <div ref={tourFormRef} className={`bg-white rounded-3xl shadow-2xl overflow-hidden p-8 lg:p-12 transition-all duration-1000 ease-out ${tourFormVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6" style={{ color: '#D2D0BB' }}>Schedule a Tour</h2>
+                <p className="text-lg text-gray-700 mb-10 leading-relaxed">We'd love to show you around. Fill out the form below and we'll be in touch shortly.</p>
+                <form className="space-y-6">
+                  <div>
+                    <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <input type="text" id="fullName" placeholder="John Doe" className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none" />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <input type="email" id="email" placeholder="john@example.com" className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none" />
+                  </div>
+                  <div>
+                    <label htmlFor="interest" className="block text-sm font-medium text-gray-700 mb-2">Interest</label>
+                    <select id="interest" className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none bg-white">
+                      <option value="">Select an option</option>
+                      <option value="assisted-living">Assisted Living</option>
+                      <option value="memory-care">Memory Care</option>
+                      <option value="respite-care">Respite Care</option>
+                      <option value="general-inquiry">General Inquiry</option>
+                    </select>
+                  </div>
+                  <button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-purple-800 text-white py-5 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">Request Information</button>
+                </form>
+              </div>
+
+              <div ref={tourMapRef} className={`relative rounded-3xl shadow-2xl overflow-hidden h-[500px] lg:h-[600px] transition-all duration-1000 ease-out delay-200 ${tourMapVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2803.2999999999997!2d-122.7644!3d45.3311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDXCsDE5JzUyLjAiTiAxMjLCsDQ1JzUyLjAiVw!5e0!3m2!1sen!2sus!4v1700000000000" width="100%" height="100%" style={{ border: 0 }} allowFullScreen="" loading="lazy" title="Wilsonville Location"></iframe>
+                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/70 via-purple-800/40 to-transparent pointer-events-none"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-8 text-white z-10">
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="text-xl font-bold mb-2">Visit Us</h4>
+                      <p className="text-base">6770 SW Molalla Bend Road<br />Wilsonville, OR 97070</p>
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold mb-2">Call Us</h4>
+                      <p className="text-base">(978) 881-8055</p>
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold mb-2">Email Us</h4>
+                      <p className="text-base">westfordhomesinc@gmail.com</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section style={{backgroundColor: '#ffffff'}} className="py-16 px-4">
+          <div ref={ctaRef} className={`text-center transition-all duration-1000 ease-out ${ctaVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+            <p className="text-xl text-gray-700 mb-6">Ready to see how we care for your loved one?</p>
+            <Link href="/contact" className="inline-flex items-center px-10 py-5 bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-full font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">Contact Us Today</Link>
           </div>
         </section>
       </main>
