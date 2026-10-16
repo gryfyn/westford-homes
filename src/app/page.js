@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
+import { FaStar } from 'react-icons/fa'
 
 export default function Home() {
   const [showGalleryModal, setShowGalleryModal] = useState(false)
@@ -61,6 +62,7 @@ export default function Home() {
     {
       id: 1,
       name: "Annamarie & Terilynn",
+      rating: 5,
       relation: "daughters",
       date: "September 17, 2023",
       title: "Perfect place for mom!",
@@ -69,6 +71,7 @@ export default function Home() {
     {
       id: 2,
       name: "Doug S.",
+      rating: 5,
       relation: "spouse",
       date: "September 5, 2023",
       title: "GREAT PLACE!",
@@ -77,6 +80,7 @@ export default function Home() {
     {
       id: 3,
       name: "Sammy",
+      rating: 5,
       relation: "family",
       date: "August 23, 2023",
       title: "A Place like home",
@@ -444,6 +448,21 @@ export default function Home() {
                     "bestRating": "5",
                     "worstRating": "1"
                   }
+                },
+                {
+                  "@type": "Review",
+                  "author": {
+                    "@type": "Person",
+                    "name": "Sammy"
+                  },
+                  "datePublished": "2023-08-23",
+                  "reviewBody": "The world a brighter place, May you continue to touch more lives in the future as you have done so for my Dad!",
+                  "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": "5",
+                    "bestRating": "5",
+                    "worstRating": "1"
+                  }
                 }
               ],
               "amenityFeature": [
@@ -699,8 +718,13 @@ export default function Home() {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {testimonials.map((testimonial, index) => (
-                <div key={testimonial.id} ref={el => testimonialsRefs.current[index] = el} className={`p-6 sm:p-8 rounded-2xl border border-blue-500/30 transition-all duration-700 ease-out ${testimonialsVisible[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{transitionDelay: `${index * 150}ms`, color: '#082125'}}>
+                <div key={testimonial.id} ref={el => testimonialsRefs.current[index] = el} className={`relative overflow-hidden p-6 sm:p-8 rounded-2xl border border-blue-500/30 transition-all duration-700 ease-out ${testimonialsVisible[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{transitionDelay: `${index * 150}ms`, color: '#082125'}}>
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-700 rounded-t-2xl"></div>
+                  <div className="flex gap-1 mb-3" role="img" aria-label={`${testimonial.rating} out of 5 stars`}>
+                    {Array.from({ length: testimonial.rating }, (_, starIndex) => (
+                      <FaStar key={starIndex} size={16} color="#C9A227" aria-hidden="true" />
+                    ))}
+                  </div>
                   <h3 className="font-bold text-lg sm:text-xl mb-3">{testimonial.title}</h3>
                   <p className="leading-relaxed mb-6 text-sm sm:text-base">"{testimonial.text}"</p>
                   <div className="border-t border-blue-500/20 pt-4">
